@@ -117,14 +117,69 @@
     ══════════════════════════════════════════ */
     .env-perspective {
       perspective: 900px;
-      perspective-origin: 50% 38%;
+      perspective-origin: 50% 50%;
     }
 
-    .envelope {
+    /* Flip wrapper — rotates on Y axis */
+    .env-flip {
       position: relative;
       width: 300px;
       height: 195px;
-      filter: drop-shadow(0 8px 28px rgba(61,43,31,0.18));
+      transform-style: preserve-3d;
+    }
+
+    /* Shared face styles */
+    .env-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      backface-visibility: hidden;
+      box-shadow: 0 8px 28px rgba(61,43,31,0.18);
+    }
+
+    /* ── Front face (address side) ── */
+    .env-face-front {
+      background: var(--env-body);
+    }
+
+    .front-stamp {
+      position: absolute;
+      top: 10px; right: 12px;
+      width: 36px; height: 44px;
+      border: 1.5px dashed rgba(139,90,60,0.28);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .front-address {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.2rem;
+    }
+    .addr-to {
+      font-family: 'Caveat', cursive;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .addr-from {
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: var(--ink-light);
+      font-style: italic;
+    }
+
+    /* ── Back face (flap/envelope side) ── */
+    .env-face-back {
+      transform: rotateY(180deg);
+      transform-style: preserve-3d;
     }
 
     /* Back face */
@@ -395,12 +450,26 @@
         <span class="arrow">&#x2193;</span>
       </div>
       <div class="env-perspective">
-        <div class="envelope">
-          <div class="env-back"></div>
-          <div class="env-paper"  id="env-paper"></div>
-          <div class="env-front"></div>
-          <div class="env-bottom"></div>
-          <div class="env-flap"   id="env-flap"></div>
+        <div class="env-flip" id="env-flip">
+
+          <!-- Front face: address side -->
+          <div class="env-face env-face-front">
+            <div class="front-stamp">&#x2665;</div>
+            <div class="front-address">
+              <span class="addr-to">To: You</span>
+              <span class="addr-from">From: A Stranger</span>
+            </div>
+          </div>
+
+          <!-- Back face: envelope with flap -->
+          <div class="env-face env-face-back">
+            <div class="env-back"></div>
+            <div class="env-paper"  id="env-paper"></div>
+            <div class="env-front"></div>
+            <div class="env-bottom"></div>
+            <div class="env-flap"   id="env-flap"></div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -492,6 +561,7 @@
     }
 
     // ── Elements ──────────────────────────────────────────────────────────────
+    const envFlip   = document.getElementById('env-flip');
     const envFlap   = document.getElementById('env-flap');
     const envPaper  = document.getElementById('env-paper');
     const hintEl    = document.getElementById('scroll-hint');
@@ -506,19 +576,24 @@
       const totalScroll = driver.offsetHeight - window.innerHeight;
       const p = clamp(window.scrollY / totalScroll, 0, 1);
 
-      // Flap opens: p 0 → 0.45
-      const flapAngle = -172 * progress(p, 0, 0.45);
+      // Phase 1 — flip envelope over: p 0 → 0.38
+      const flipAngle = 180 * progress(p, 0, 0.38);
+      envFlip.style.transform = `rotateY(${flipAngle}deg)`;
+
+      // Phase 2 — flap opens: p 0.40 → 0.72
+      const flapAngle = -172 * progress(p, 0.40, 0.72);
       envFlap.style.transform = `rotateX(${flapAngle}deg)`;
 
-      // Paper slides up: p 0.1 → 0.72
-      const paperY = -70 * progress(p, 0.1, 0.72);
+      // Phase 3 — paper slides up: p 0.48 → 0.85
+      const paperY = -70 * progress(p, 0.48, 0.85);
       envPaper.style.transform = `translateY(${paperY}%)`;
 
-      // Hint: fade out and change text
-      const hintOpacity = 1 - progress(p, 0, 0.12);
+      // Hint text
+      const hintOpacity = 1 - progress(p, 0, 0.10);
       hintEl.style.opacity = hintOpacity;
-      if (p > 0.45 && p < 0.75) hintText.textContent = 'almost there ♡';
-      else if (p <= 0.45)       hintText.textContent = 'scroll to open your letter';
+      if (p < 0.38)       hintText.textContent = 'scroll to see who it\'s from';
+      else if (p < 0.65)  hintText.textContent = 'keep going \u2665';
+      else                hintText.textContent = 'almost there \u2665';
 
       // Trigger full reveal
       if (p >= 0.92) triggerReveal();
