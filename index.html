@@ -147,8 +147,8 @@
     .env-paper {
       position: absolute;
       left: 9%; right: 9%;
-      bottom: 0;
-      height: 108%;
+      bottom: 5%;
+      height: 85%;
       background: #fffdf8;
       border-radius: 3px 3px 0 0;
       z-index: 2;
@@ -511,7 +511,7 @@
       envFlap.style.transform = `rotateX(${flapAngle}deg)`;
 
       // Paper slides up: p 0.1 → 0.72
-      const paperY = 62 + (-32 - 62) * progress(p, 0.1, 0.72);
+      const paperY = -70 * progress(p, 0.1, 0.72);
       envPaper.style.transform = `translateY(${paperY}%)`;
 
       // Hint: fade out and change text
