@@ -179,7 +179,7 @@
     /* ── Back face (flap/envelope side) ── */
     .env-face-back {
       transform: rotateY(180deg);
-      transform-style: preserve-3d;
+      perspective: 900px;
     }
 
     /* Back face */
@@ -581,11 +581,8 @@
       envFlip.style.transform = `rotateY(${flipAngle}deg)`;
 
       // Phase 2 — flap opens: p 0.40 → 0.72
-      const flapAngle = -172 * progress(p, 0.40, 0.72);
+      const flapAngle = 172 * progress(p, 0.40, 0.72);
       envFlap.style.transform = `rotateX(${flapAngle}deg)`;
-
-      // Hide paper while front face is still showing (before flip completes)
-      envPaper.style.visibility = p < 0.40 ? 'hidden' : 'visible';
 
       // Phase 3 — paper slides up: p 0.48 → 0.85
       const paperY = -70 * progress(p, 0.48, 0.85);
