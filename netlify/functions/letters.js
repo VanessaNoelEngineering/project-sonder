@@ -1,12 +1,4 @@
-// Netlify serverless function — GET /api/letters?password=...
-// Returns all letters if the correct password is supplied.
-// Password and Supabase credentials live in Netlify env vars only.
-
 export default async (req) => {
-  if (req.method !== 'GET') {
-    return new Response('Method not allowed', { status: 405 });
-  }
-
   const url = new URL(req.url);
   const password = url.searchParams.get('password') || '';
 
@@ -33,5 +25,3 @@ export default async (req) => {
   const letters = await res.json();
   return Response.json(letters);
 };
-
-export const config = { path: '/api/letters' };
