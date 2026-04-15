@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leave a Note</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #fffaf3;
+      --warm:  #fef3e2;
+      --pink:  #f9c4d0;
+      --lavender: #ddd6f3;
+      --mint:  #c8ecd9;
+      --ink:   #3d2b1f;
+      --ink-light: #8a6a5e;
+      --shadow: rgba(61,43,31,0.12);
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(150deg, #fde8ee 0%, #f0edfa 45%, #e8f7f0 100%);
+      font-family: 'Lora', serif;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 10% 15%, rgba(249,196,208,0.35) 0%, transparent 45%),
+        radial-gradient(circle at 90% 75%, rgba(221,214,243,0.4) 0%, transparent 45%),
+        radial-gradient(circle at 50% 95%, rgba(200,236,217,0.3) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .deco {
+      position: fixed;
+      opacity: 0.15;
+      pointer-events: none;
+      animation: float 6s ease-in-out infinite;
+      font-size: 1.5rem;
+    }
+    .d1 { top:6%;   left:5%;   font-size:2rem;   animation-delay:0s; }
+    .d2 { top:10%;  right:7%;  font-size:1.1rem; animation-delay:1.2s; }
+    .d3 { top:35%;  left:3%;                     animation-delay:2.1s; }
+    .d4 { top:60%;  right:4%;  font-size:1.8rem; animation-delay:0.6s; }
+    .d5 { bottom:18%; left:6%;                   animation-delay:1.8s; }
+    .d6 { bottom:7%;  right:9%; font-size:1.9rem; animation-delay:3.3s; }
+    .d7 { top:78%;  left:2%;   font-size:1rem;   animation-delay:2.7s; }
+    .d8 { top:48%;  right:2%;  font-size:0.9rem; animation-delay:4.1s; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0) rotate(-4deg); }
+      50%      { transform: translateY(-11px) rotate(4deg); }
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 2.25rem 2rem;
+      width: 100%;
+      max-width: 540px;
+      box-shadow: 0 6px 32px var(--shadow), 0 1px 6px rgba(0,0,0,0.05);
+      animation: slideUp 0.5s ease both;
+    }
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top:0; left:0; right:0;
+      height: 6px;
+      border-radius: 20px 20px 0 0;
+      background: linear-gradient(90deg, #f9c4d0, #ddd6f3, #c8ecd9);
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+    .envelope {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 0.4rem;
+      animation: wiggle 4s ease-in-out infinite;
+    }
+    @keyframes wiggle {
+      0%,80%,100% { transform: rotate(0); }
+      85% { transform: rotate(-10deg); }
+      92% { transform: rotate(10deg); }
+    }
+    .card-header h1 {
+      font-family: 'Caveat', cursive;
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .card-header p {
+      font-family: 'Caveat', cursive;
+      font-size: 1.05rem;
+      color: var(--ink-light);
+      margin-top: 0.35rem;
+    }
+
+    .form-group { margin-bottom: 1.2rem; }
+    label {
+      display: block;
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink-light);
+      margin-bottom: 0.4rem;
+    }
+    input[type="text"], textarea {
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      color: var(--ink);
+      background: var(--warm);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 0.7rem 0.9rem;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      resize: none;
+    }
+    input[type="text"]:focus, textarea:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(249,196,208,0.3);
+    }
+    textarea {
+      min-height: 170px;
+      line-height: 1.65;
+      background-image:
+        linear-gradient(var(--warm) 0%, var(--warm) 100%),
+        repeating-linear-gradient(
+          to bottom,
+          transparent, transparent 31px,
+          rgba(200,185,170,0.2) 31px, rgba(200,185,170,0.2) 32px
+        );
+    }
+    .char-count {
+      font-family: 'Caveat', cursive;
+      font-size: 0.85rem;
+      color: var(--ink-light);
+      text-align: right;
+      margin-top: 0.3rem;
+    }
+    .char-count.warn { color: #d97070; }
+
+    .submit-btn {
+      width: 100%;
+      font-family: 'Caveat', cursive;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+      background: linear-gradient(135deg, #f9c4d0 0%, #ddd6f3 60%, #c8ecd9 100%);
+      border: none;
+      border-radius: 50px;
+      padding: 0.85rem 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 3px 14px rgba(249,196,208,0.5);
+      transition: transform 0.15s, box-shadow 0.15s;
+      margin-top: 0.5rem;
+    }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(249,196,208,0.65);
+    }
+    .submit-btn:active { transform: scale(0.98); }
+    .submit-btn:disabled { opacity: 0.6; cursor: default; transform: none; }
+
+    .error-msg {
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: #c0504d;
+      text-align: center;
+      margin-top: 0.5rem;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+
+    /* Not configured banner */
+    #config-banner {
+      display: none;
+      background: #fff3cd;
+      border: 2px dashed #f0c040;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: #7a5500;
+      line-height: 1.6;
+    }
+    #config-banner a { color: #7a5500; font-weight: 700; }
+
+    /* Thank-you state */
+    #thank-you {
+      display: none;
+      text-align: center;
+      animation: popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(0.8); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    #thank-you .big-emoji { font-size: 4rem; display: block; margin-bottom: 0.75rem; }
+    #thank-you h2 {
+      font-family: 'Caveat', cursive;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    #thank-you p {
+      font-family: 'Caveat', cursive;
+      font-size: 1.15rem;
+      color: var(--ink-light);
+      line-height: 1.6;
+    }
+    #thank-you .again-btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: var(--ink-light);
+      text-decoration: underline dotted;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    #thank-you .again-btn:hover { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <span class="deco d1">✿</span>
+  <span class="deco d2">✦</span>
+  <span class="deco d3">♡</span>
+  <span class="deco d4">✿</span>
+  <span class="deco d5">✦</span>
+  <span class="deco d6">♡</span>
+  <span class="deco d7">✿</span>
+  <span class="deco d8">✦</span>
+
+  <div class="card">
+    <div id="form-view">
+      <div id="config-banner">
+        <strong>Setup needed:</strong> Open <code>index.html</code> and replace <code>YOUR_SUPABASE_URL</code> and <code>YOUR_SUPABASE_ANON_KEY</code> with your Supabase project values. See <a href="SETUP.md">SETUP.md</a> for instructions.
+      </div>
+
+      <div class="card-header">
+        <span class="envelope">&#x2709;&#xFE0F;</span>
+        <h1>Leave a little note</h1>
+        <p>say whatever's on your mind &mdash; I'll read every one &#x2665;</p>
+      </div>
+
+      <div class="form-group">
+        <label for="name">your name (optional)</label>
+        <input type="text" id="name" placeholder="e.g. Luna, A Stranger, Your Biggest Fan..." maxlength="40" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="message">your note *</label>
+        <textarea id="message" placeholder="Write anything &mdash; a memory, a wish, a secret, a hello..." maxlength="600"></textarea>
+        <div class="char-count" id="char-count">0 / 600</div>
+      </div>
+
+      <button class="submit-btn" id="submit-btn">send it &#x2709;&#xFE0F;</button>
+      <div class="error-msg" id="error-msg">oops &mdash; please write something first!</div>
+    </div>
+
+    <div id="thank-you">
+      <span class="big-emoji">&#x1F338;</span>
+      <h2>Your note is sent!</h2>
+      <p>Thank you for leaving a little piece of yourself here.<br>It means more than you know. &#x2665;</p>
+      <button class="again-btn" id="again-btn">write another</button>
+    </div>
+  </div>
+
+  <script type="module">
+    // ── CONFIG ────────────────────────────────────────────────────────────────
+    // Replace these two values with your Supabase project credentials.
+    // See SETUP.md for step-by-step instructions.
+    const SUPABASE_URL  = 'YOUR_SUPABASE_URL';
+    const SUPABASE_KEY  = 'YOUR_SUPABASE_ANON_KEY';
+    // ─────────────────────────────────────────────────────────────────────────
+
+    const configured = SUPABASE_URL !== 'YOUR_SUPABASE_URL';
+    if (!configured) {
+      document.getElementById('config-banner').style.display = 'block';
+    }
+
+    const msgEl     = document.getElementById('message');
+    const charEl    = document.getElementById('char-count');
+    const submitBtn = document.getElementById('submit-btn');
+    const errorEl   = document.getElementById('error-msg');
+
+    msgEl.addEventListener('input', () => {
+      const len = msgEl.value.length;
+      charEl.textContent = `${len} / 600`;
+      charEl.classList.toggle('warn', len > 550);
+    });
+
+    submitBtn.addEventListener('click', async () => {
+      const name    = document.getElementById('name').value.trim();
+      const message = msgEl.value.trim();
+
+      if (!message) {
+        errorEl.textContent = 'oops — please write something first!';
+        errorEl.classList.add('show');
+        msgEl.focus();
+        msgEl.style.borderColor = '#f4a0b0';
+        setTimeout(() => { msgEl.style.borderColor = ''; errorEl.classList.remove('show'); }, 2000);
+        return;
+      }
+
+      if (!configured) {
+        errorEl.textContent = 'Supabase is not configured yet — see the yellow banner above.';
+        errorEl.classList.add('show');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'sending...';
+
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/letters`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify({
+            name: name || 'Anonymous',
+            message: message.slice(0, 600),
+          }),
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        document.getElementById('form-view').style.display = 'none';
+        document.getElementById('thank-you').style.display = 'block';
+      } catch (err) {
+        console.error(err);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'send it \u2709\uFE0F';
+        errorEl.textContent = 'something went wrong — please try again!';
+        errorEl.classList.add('show');
+        setTimeout(() => errorEl.classList.remove('show'), 3000);
+      }
+    });
+
+    document.getElementById('again-btn').addEventListener('click', () => {
+      document.getElementById('thank-you').style.display = 'none';
+      document.getElementById('form-view').style.display = 'block';
+      document.getElementById('name').value = '';
+      msgEl.value = '';
+      charEl.textContent = '0 / 600';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'send it \u2709\uFE0F';
+    });
+  </script>
+</body>
+</html>
