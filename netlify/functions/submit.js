@@ -1,7 +1,3 @@
-// Netlify serverless function — POST /api/submit
-// Receives a letter from the browser and saves it to Supabase.
-// Supabase credentials live in Netlify environment variables, never the browser.
-
 export default async (req) => {
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 });
@@ -40,5 +36,3 @@ export default async (req) => {
 
   return Response.json({ ok: true });
 };
-
-export const config = { path: '/api/submit' };
