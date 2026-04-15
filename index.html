@@ -188,7 +188,6 @@
       inset: 0;
       background: var(--env-body);
       border-radius: 4px;
-      backface-visibility: hidden;
     }
     .env-back::after {
       content: '';
@@ -208,7 +207,6 @@
       background: #fffdf8;
       border-radius: 3px 3px 0 0;
       z-index: 2;
-      backface-visibility: hidden;
       /* lined paper */
       background-image: repeating-linear-gradient(
         to bottom,
@@ -223,7 +221,6 @@
       inset: 0;
       z-index: 3;
       pointer-events: none;
-      backface-visibility: hidden;
     }
     .env-front::before {
       content: '';
@@ -249,7 +246,6 @@
       background: var(--env-body);
       clip-path: polygon(0 100%, 50% 46%, 100% 100%);
       border-radius: 0 0 4px 4px;
-      backface-visibility: hidden;
     }
 
     /* Top flap — JS controls transform */
@@ -587,6 +583,9 @@
       // Phase 2 — flap opens: p 0.40 → 0.72
       const flapAngle = -172 * progress(p, 0.40, 0.72);
       envFlap.style.transform = `rotateX(${flapAngle}deg)`;
+
+      // Hide paper while front face is still showing (before flip completes)
+      envPaper.style.visibility = p < 0.40 ? 'hidden' : 'visible';
 
       // Phase 3 — paper slides up: p 0.48 → 0.85
       const paperY = -70 * progress(p, 0.48, 0.85);
