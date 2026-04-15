@@ -3,20 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leave a Note</title>
+  <title>Sonder — A Letter For You</title>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --cream: #fffaf3;
-      --warm:  #fef3e2;
-      --pink:  #f9c4d0;
-      --lavender: #ddd6f3;
-      --mint:  #c8ecd9;
-      --ink:   #3d2b1f;
-      --ink-light: #8a6a5e;
-      --shadow: rgba(61,43,31,0.12);
+      --cream:       #fffaf3;
+      --warm:        #fef3e2;
+      --pink:        #f9c4d0;
+      --pink-light:  #fde8ee;
+      --lavender:    #ddd6f3;
+      --lav-light:   #f0edfa;
+      --mint:        #c8ecd9;
+      --mint-light:  #e8f7f0;
+      --env-body:    #fdefd8;
+      --env-flap:    #f9e0b8;
+      --env-shade:   #f0d0a0;
+      --ink:         #3d2b1f;
+      --ink-light:   #8a6a5e;
+      --shadow:      rgba(61,43,31,0.12);
     }
 
     body {
@@ -25,9 +31,9 @@
       font-family: 'Lora', serif;
       color: var(--ink);
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
+      padding: 2rem 1rem 4rem;
       position: relative;
       overflow-x: hidden;
     }
@@ -43,6 +49,7 @@
       pointer-events: none;
     }
 
+    /* Floating decorations */
     .deco {
       position: fixed;
       opacity: 0.15;
@@ -64,56 +71,283 @@
       50%      { transform: translateY(-11px) rotate(4deg); }
     }
 
-    .card {
+    /* ── Wrapper ── */
+    .wrapper {
       position: relative;
       z-index: 1;
-      background: var(--cream);
-      border-radius: 20px;
-      padding: 2.25rem 2rem;
       width: 100%;
-      max-width: 540px;
-      box-shadow: 0 6px 32px var(--shadow), 0 1px 6px rgba(0,0,0,0.05);
-      animation: slideUp 0.5s ease both;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
     }
-    @keyframes slideUp {
-      from { opacity:0; transform:translateY(20px); }
-      to   { opacity:1; transform:translateY(0); }
+
+    /* ── Header ── */
+    .site-header {
+      text-align: center;
+      padding: 0.5rem 0;
+      animation: fadeUp 0.5s ease both;
+    }
+    .site-header .tagline {
+      font-family: 'Caveat', cursive;
+      font-size: 1.05rem;
+      color: var(--ink-light);
+    }
+
+    /* ── Envelope scene ── */
+    #envelope-scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      animation: fadeUp 0.5s 0.1s ease both;
+      width: 100%;
+    }
+
+    .scene-hint {
+      font-family: 'Caveat', cursive;
+      font-size: 1.15rem;
+      color: var(--ink-light);
+      text-align: center;
+      min-height: 1.5rem;
+    }
+
+    /* Envelope container — provides perspective for 3D flap */
+    .env-perspective {
+      perspective: 900px;
+      perspective-origin: 50% 40%;
+    }
+
+    .envelope {
+      position: relative;
+      width: 300px;
+      height: 195px;
+      filter: drop-shadow(0 8px 24px rgba(61,43,31,0.18));
+    }
+
+    /* Back face (shown when flap opens) */
+    .env-back {
+      position: absolute;
+      inset: 0;
+      background: var(--env-body);
+      border-radius: 4px;
+    }
+    /* Bottom V‑fold on inside */
+    .env-back::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--env-shade);
+      clip-path: polygon(0 100%, 50% 44%, 100% 100%);
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* Letter paper (z above back, below flap) */
+    .env-paper {
+      position: absolute;
+      left: 9%;
+      right: 9%;
+      bottom: 0;
+      height: 108%;
+      background: #fffdf8;
+      border-radius: 3px 3px 0 0;
+      z-index: 2;
+      transform: translateY(62%);
+      /* lined paper */
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent, transparent 23px,
+        rgba(200,185,170,0.18) 23px, rgba(200,185,170,0.18) 24px
+      );
+    }
+    .env-paper.slide-up {
+      animation: paperSlide 0.65s 0.35s cubic-bezier(0.34,1.1,0.64,1) forwards;
+    }
+    @keyframes paperSlide {
+      to { transform: translateY(-32%); }
+    }
+
+    /* Front body — covers lower portion, hides paper edges */
+    .env-front {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+    }
+    /* Left diagonal fold */
+    .env-front::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--env-body);
+      clip-path: polygon(0 0, 47% 46%, 0 100%);
+    }
+    /* Right diagonal fold */
+    .env-front::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--env-flap);
+      clip-path: polygon(100% 0, 53% 46%, 100% 100%);
+    }
+
+    /* Bottom front flap */
+    .env-bottom {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      background: var(--env-body);
+      clip-path: polygon(0 100%, 50% 46%, 100% 100%);
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* Top flap — rotates open */
+    .env-flap {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 55%;
+      background: var(--env-flap);
+      clip-path: polygon(0 0, 100% 0, 50% 92%);
+      border-radius: 4px 4px 0 0;
+      z-index: 5;
+      transform-origin: 50% 0%;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+    }
+    /* Subtle crease line on flap */
+    .env-flap::after {
+      content: '';
+      position: absolute;
+      bottom: 20%;
+      left: 15%; right: 15%;
+      height: 1px;
+      background: rgba(61,43,31,0.06);
+    }
+
+    .env-flap.opening {
+      animation: flapOpen 0.75s cubic-bezier(0.4,0,0.2,1) forwards;
+    }
+    @keyframes flapOpen {
+      0%   { transform: rotateX(0deg); }
+      100% { transform: rotateX(-172deg); }
+    }
+
+    /* Whole envelope fades out after open */
+    #envelope-scene.fade-out {
+      animation: sceneOut 0.5s ease forwards;
+    }
+    @keyframes sceneOut {
+      to { opacity: 0; transform: translateY(12px); pointer-events: none; }
+    }
+
+    /* ── Letter card ── */
+    #letter-section {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    #letter-section.visible {
+      display: flex;
+      animation: fadeUp 0.55s ease both;
+    }
+
+    /* ── Cards shared styles ── */
+    .card {
+      background: var(--cream);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 24px var(--shadow), 0 1px 4px rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
     }
     .card::before {
       content: '';
       position: absolute;
       top:0; left:0; right:0;
-      height: 6px;
-      border-radius: 20px 20px 0 0;
-      background: linear-gradient(90deg, #f9c4d0, #ddd6f3, #c8ecd9);
+      height: 5px;
+      border-radius: 16px 16px 0 0;
+    }
+    .card.pink::before   { background: linear-gradient(90deg, #f9c4d0, #fde8ee); }
+    .card.mint::before   { background: linear-gradient(90deg, #c8ecd9, #e8f7f0); }
+    .card.lavender::before { background: linear-gradient(90deg, #ddd6f3, #f0edfa); }
+
+    /* Lined paper on letter card */
+    .lined {
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent, transparent 31px,
+        rgba(200,185,170,0.15) 31px, rgba(200,185,170,0.15) 32px
+      );
+      line-height: 32px;
     }
 
-    .card-header {
-      text-align: center;
-      margin-bottom: 1.75rem;
-    }
-    .envelope {
-      font-size: 3rem;
-      display: block;
-      margin-bottom: 0.4rem;
-      animation: wiggle 4s ease-in-out infinite;
-    }
-    @keyframes wiggle {
-      0%,80%,100% { transform: rotate(0); }
-      85% { transform: rotate(-10deg); }
-      92% { transform: rotate(10deg); }
-    }
-    .card-header h1 {
+    .card-label {
       font-family: 'Caveat', cursive;
-      font-size: 2rem;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-    .card-header p {
-      font-family: 'Caveat', cursive;
-      font-size: 1.05rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: var(--ink-light);
-      margin-top: 0.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .letter-from {
+      font-family: 'Caveat', cursive;
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .letter-date {
+      font-family: 'Caveat', cursive;
+      font-size: 0.9rem;
+      color: var(--ink-light);
+      margin-bottom: 1.25rem;
+    }
+    .letter-body {
+      font-family: 'Caveat', cursive;
+      font-size: 1.25rem;
+      line-height: 2rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .letter-seal {
+      text-align: right;
+      margin-top: 1.25rem;
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: var(--ink-light);
+      font-style: italic;
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--ink-light);
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      width: 100%;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(200,185,170,0.35);
+    }
+
+    /* ── Write form ── */
+    #write-section {
+      display: none;
+      width: 100%;
+    }
+    #write-section.visible {
+      display: block;
+      animation: fadeUp 0.45s ease both;
     }
 
     .form-group { margin-bottom: 1.2rem; }
@@ -131,7 +365,7 @@
       color: var(--ink);
       background: var(--warm);
       border: 2px solid transparent;
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 0.7rem 0.9rem;
       width: 100%;
       outline: none;
@@ -143,7 +377,7 @@
       box-shadow: 0 0 0 3px rgba(249,196,208,0.3);
     }
     textarea {
-      min-height: 170px;
+      min-height: 160px;
       line-height: 1.65;
       background-image:
         linear-gradient(var(--warm) 0%, var(--warm) 100%),
@@ -165,7 +399,7 @@
     .submit-btn {
       width: 100%;
       font-family: 'Caveat', cursive;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--ink);
       background: linear-gradient(135deg, #f9c4d0 0%, #ddd6f3 60%, #c8ecd9 100%);
@@ -175,12 +409,9 @@
       cursor: pointer;
       box-shadow: 0 3px 14px rgba(249,196,208,0.5);
       transition: transform 0.15s, box-shadow 0.15s;
-      margin-top: 0.5rem;
+      margin-top: 0.25rem;
     }
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(249,196,208,0.65);
-    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(249,196,208,0.65); }
     .submit-btn:active { transform: scale(0.98); }
     .submit-btn:disabled { opacity: 0.6; cursor: default; transform: none; }
 
@@ -194,29 +425,19 @@
     }
     .error-msg.show { display: block; }
 
-    /* Thank-you state */
+    /* ── Thank-you ── */
     #thank-you {
       display: none;
       text-align: center;
+      width: 100%;
+    }
+    #thank-you.visible {
+      display: block;
       animation: popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
     }
-    @keyframes popIn {
-      from { opacity:0; transform:scale(0.8); }
-      to   { opacity:1; transform:scale(1); }
-    }
-    #thank-you .big-emoji { font-size: 4rem; display: block; margin-bottom: 0.75rem; }
-    #thank-you h2 {
-      font-family: 'Caveat', cursive;
-      font-size: 2.2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    #thank-you p {
-      font-family: 'Caveat', cursive;
-      font-size: 1.15rem;
-      color: var(--ink-light);
-      line-height: 1.6;
-    }
+    #thank-you .big-emoji { font-size: 3.5rem; display: block; margin-bottom: 0.75rem; }
+    #thank-you h2 { font-family: 'Caveat', cursive; font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    #thank-you p  { font-family: 'Caveat', cursive; font-size: 1.1rem; color: var(--ink-light); line-height: 1.6; }
     #thank-you .again-btn {
       display: inline-block;
       margin-top: 1.5rem;
@@ -230,9 +451,31 @@
       padding: 0;
     }
     #thank-you .again-btn:hover { color: var(--ink); }
+
+    /* ── Write-first (no letters yet) ── */
+    #write-first {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    #write-first.visible { display: flex; animation: fadeUp 0.5s ease both; }
+
+    /* Shared animations */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(0.85); }
+      to   { opacity:1; transform:scale(1); }
+    }
+
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
+
   <span class="deco d1">✿</span>
   <span class="deco d2">✦</span>
   <span class="deco d3">♡</span>
@@ -242,94 +485,249 @@
   <span class="deco d7">✿</span>
   <span class="deco d8">✦</span>
 
-  <div class="card">
-    <div id="form-view">
-      <div class="card-header">
-        <span class="envelope">&#x2709;&#xFE0F;</span>
-        <h1>Leave a little note</h1>
-        <p>say whatever's on your mind &mdash; I'll read every one &#x2665;</p>
-      </div>
+  <div class="wrapper">
 
-      <div class="form-group">
-        <label for="name">your name (optional)</label>
-        <input type="text" id="name" placeholder="e.g. Luna, A Stranger, Your Biggest Fan..." maxlength="40" autocomplete="off">
-      </div>
-      <div class="form-group">
-        <label for="message">your note *</label>
-        <textarea id="message" placeholder="Write anything &mdash; a memory, a wish, a secret, a hello..." maxlength="600"></textarea>
-        <div class="char-count" id="char-count">0 / 600</div>
-      </div>
+    <header class="site-header">
+      <p class="tagline">a little something left just for you ♡</p>
+    </header>
 
-      <button class="submit-btn" id="submit-btn">send it &#x2709;&#xFE0F;</button>
-      <div class="error-msg" id="error-msg">oops &mdash; please write something first!</div>
+    <!-- ── Envelope scene ── -->
+    <div id="envelope-scene">
+      <p class="scene-hint" id="scene-hint">opening your letter...</p>
+      <div class="env-perspective">
+        <div class="envelope">
+          <div class="env-back"></div>
+          <div class="env-paper"  id="env-paper"></div>
+          <div class="env-front"></div>
+          <div class="env-bottom"></div>
+          <div class="env-flap"   id="env-flap"></div>
+        </div>
+      </div>
     </div>
 
+    <!-- ── Received letter ── -->
+    <div id="letter-section">
+      <div class="card pink lined">
+        <div class="card-label">&#x1F48C; a letter for you</div>
+        <div class="letter-from" id="letter-from"></div>
+        <div class="letter-date" id="letter-date"></div>
+        <div class="letter-body" id="letter-body"></div>
+        <div class="letter-seal">&#x2014; with love &#x2665;</div>
+      </div>
+      <div class="divider">now it&#x2019;s your turn</div>
+    </div>
+
+    <!-- ── Write form (after reading) ── -->
+    <div id="write-section">
+      <div class="card mint">
+        <div class="card-label">&#x270A; leave your letter</div>
+        <div class="form-group">
+          <label for="name">your name (or keep the mystery)</label>
+          <input type="text" id="name" placeholder="e.g. Luna, A Stranger, Your Biggest Fan..." maxlength="40" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="message">your note</label>
+          <textarea id="message" placeholder="Write anything &#x2014; a memory, a wish, a secret, a hello..." maxlength="600"></textarea>
+          <div class="char-count" id="char-count">0 / 600</div>
+        </div>
+        <button class="submit-btn" id="submit-btn">seal &amp; send &#x2709;&#xFE0F;</button>
+        <div class="error-msg" id="error-msg">please write something first!</div>
+      </div>
+    </div>
+
+    <!-- ── Write-first (no letters in DB yet) ── -->
+    <div id="write-first">
+      <div class="card lavender">
+        <p style="font-family:'Caveat',cursive;font-size:1.3rem;line-height:1.6;text-align:center">
+          <strong>You found a blank page!</strong><br><br>
+          No one has written here yet &#x2014; be the first. &#x2728;<br><br>
+          Your note will be the letter the next person opens.
+        </p>
+      </div>
+      <div class="card mint">
+        <div class="card-label">&#x270A; write the first letter</div>
+        <div class="form-group">
+          <label for="name-first">your name (or keep the mystery)</label>
+          <input type="text" id="name-first" placeholder="e.g. Luna, A Stranger, Your Biggest Fan..." maxlength="40" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="message-first">your note</label>
+          <textarea id="message-first" placeholder="Write anything &#x2014; a memory, a wish, a secret, a hello..." maxlength="600"></textarea>
+          <div class="char-count" id="char-count-first">0 / 600</div>
+        </div>
+        <button class="submit-btn" id="submit-btn-first">seal &amp; send &#x2709;&#xFE0F;</button>
+        <div class="error-msg" id="error-msg-first">please write something first!</div>
+      </div>
+    </div>
+
+    <!-- ── Thank you ── -->
     <div id="thank-you">
-      <span class="big-emoji">&#x1F338;</span>
-      <h2>Your note is sent!</h2>
-      <p>Thank you for leaving a little piece of yourself here.<br>It means more than you know. &#x2665;</p>
-      <button class="again-btn" id="again-btn">write another</button>
+      <div class="card pink" style="text-align:center;padding:2.5rem 2rem">
+        <span class="big-emoji">&#x1F338;</span>
+        <h2>Your letter is sent!</h2>
+        <p>Thank you for leaving a little piece of yourself here.<br>It means more than you know. &#x2665;</p>
+        <button class="again-btn" id="again-btn">write another</button>
+      </div>
     </div>
-  </div>
+
+  </div><!-- .wrapper -->
 
   <script type="module">
-    const msgEl     = document.getElementById('message');
-    const charEl    = document.getElementById('char-count');
-    const submitBtn = document.getElementById('submit-btn');
-    const errorEl   = document.getElementById('error-msg');
+    // ── Helpers ───────────────────────────────────────────────────────────────
 
-    msgEl.addEventListener('input', () => {
-      const len = msgEl.value.length;
-      charEl.textContent = `${len} / 600`;
-      charEl.classList.toggle('warn', len > 550);
-    });
+    function show(id, cls = 'visible') {
+      const el = document.getElementById(id);
+      el.classList.add(cls);
+    }
+    function hide(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+    function esc(str) {
+      return String(str)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function formatDate(iso) {
+      return new Date(iso).toLocaleDateString('en-US', {
+        year:'numeric', month:'long', day:'numeric'
+      });
+    }
 
-    submitBtn.addEventListener('click', async () => {
-      const name    = document.getElementById('name').value.trim();
-      const message = msgEl.value.trim();
+    // ── Envelope animation ────────────────────────────────────────────────────
 
-      if (!message) {
-        errorEl.textContent = 'oops — please write something first!';
-        errorEl.classList.add('show');
-        msgEl.focus();
-        msgEl.style.borderColor = '#f4a0b0';
-        setTimeout(() => { msgEl.style.borderColor = ''; errorEl.classList.remove('show'); }, 2000);
+    function runEnvelopeAnimation(onDone) {
+      const flap  = document.getElementById('env-flap');
+      const paper = document.getElementById('env-paper');
+      const scene = document.getElementById('envelope-scene');
+      const hint  = document.getElementById('scene-hint');
+
+      hint.textContent = 'a letter arrived for you ♡';
+
+      // 1. Open the flap after a short pause
+      setTimeout(() => {
+        flap.classList.add('opening');
+      }, 700);
+
+      // 2. Slide the paper up as flap opens
+      setTimeout(() => {
+        paper.classList.add('slide-up');
+      }, 900);
+
+      // 3. Fade out the envelope, reveal letter
+      setTimeout(() => {
+        scene.classList.add('fade-out');
+        setTimeout(() => {
+          scene.classList.add('hidden');
+          onDone();
+        }, 500);
+      }, 1900);
+    }
+
+    // ── Main flow ─────────────────────────────────────────────────────────────
+
+    async function init() {
+      let letter = null;
+
+      try {
+        const res = await fetch('/api/random-letter');
+        if (res.ok) {
+          const data = await res.json();
+          if (!data.empty) letter = data;
+        }
+      } catch { /* offline / local preview */ }
+
+      if (!letter) {
+        // No letters yet — skip envelope, show write-first
+        document.getElementById('envelope-scene').classList.add('hidden');
+        show('write-first');
+        wireFirstForm();
         return;
       }
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'sending...';
+      // Fill in letter content (hidden until envelope opens)
+      document.getElementById('letter-from').textContent =
+        letter.name ? `Dear you, from ${letter.name}` : 'Dear you,';
+      document.getElementById('letter-date').textContent =
+        formatDate(letter.created_at);
+      document.getElementById('letter-body').textContent = letter.message;
 
-      try {
-        const res = await fetch('/api/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, message }),
-        });
+      // Run animation, then reveal
+      runEnvelopeAnimation(() => {
+        show('letter-section');
+        setTimeout(() => {
+          show('write-section');
+        }, 300);
+      });
+    }
 
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    // ── Submit (main form) ────────────────────────────────────────────────────
 
-        document.getElementById('form-view').style.display = 'none';
-        document.getElementById('thank-you').style.display = 'block';
-      } catch (err) {
-        console.error(err);
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'send it \u2709\uFE0F';
-        errorEl.textContent = 'something went wrong — please try again!';
-        errorEl.classList.add('show');
-        setTimeout(() => errorEl.classList.remove('show'), 3000);
-      }
-    });
+    async function submitLetter(name, message, onSuccess) {
+      const res = await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, message }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      onSuccess();
+    }
 
+    function wireForm(nameId, msgId, countId, btnId, errId) {
+      const msgEl  = document.getElementById(msgId);
+      const charEl = document.getElementById(countId);
+      const btn    = document.getElementById(btnId);
+      const err    = document.getElementById(errId);
+
+      msgEl.addEventListener('input', () => {
+        const len = msgEl.value.length;
+        charEl.textContent = `${len} / 600`;
+        charEl.classList.toggle('warn', len > 550);
+      });
+
+      btn.addEventListener('click', async () => {
+        const name    = document.getElementById(nameId).value.trim();
+        const message = msgEl.value.trim();
+        if (!message) {
+          err.classList.add('show');
+          msgEl.focus();
+          msgEl.style.borderColor = '#f4a0b0';
+          setTimeout(() => { msgEl.style.borderColor = ''; err.classList.remove('show'); }, 2000);
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent = 'sending...';
+        try {
+          await submitLetter(name, message, () => {
+            hide('letter-section');
+            hide('write-section');
+            hide('write-first');
+            show('thank-you');
+            document.getElementById('thank-you').scrollIntoView({ behavior:'smooth', block:'center' });
+          });
+        } catch {
+          btn.disabled = false;
+          btn.textContent = 'seal & send ✉️';
+          err.textContent = 'something went wrong — please try again!';
+          err.classList.add('show');
+          setTimeout(() => err.classList.remove('show'), 3000);
+        }
+      });
+    }
+
+    function wireFirstForm() {
+      wireForm('name-first', 'message-first', 'char-count-first', 'submit-btn-first', 'error-msg-first');
+    }
+
+    // Wire the main form
+    wireForm('name', 'message', 'char-count', 'submit-btn', 'error-msg');
+
+    // Write another
     document.getElementById('again-btn').addEventListener('click', () => {
-      document.getElementById('thank-you').style.display = 'none';
-      document.getElementById('form-view').style.display = 'block';
-      document.getElementById('name').value = '';
-      msgEl.value = '';
-      charEl.textContent = '0 / 600';
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'send it \u2709\uFE0F';
+      location.reload();
     });
+
+    // ── Go ────────────────────────────────────────────────────────────────────
+    init();
   </script>
 </body>
 </html>
