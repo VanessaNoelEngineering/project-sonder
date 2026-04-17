@@ -440,6 +440,62 @@
       color: var(--ink-light);
     }
 
+    /* ── Closing envelope (post-submit) ── */
+    .env-close-scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      width: 100%;
+      min-height: 100vh;
+    }
+    .env-close-flip {
+      position: relative;
+      width: 300px;
+      height: 195px;
+      transform-style: preserve-3d;
+    }
+    .env-close-back {
+      perspective: 900px;
+      background: var(--env-body);
+    }
+    .env-close-front {
+      transform: rotateY(180deg);
+      background: var(--env-body);
+    }
+    .env-close-paper {
+      position: absolute;
+      left: 9%; right: 9%;
+      bottom: 5%; height: 85%;
+      background: #fffdf8;
+      border-radius: 3px 3px 0 0;
+      z-index: 2;
+      transform: translateY(-70%);
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent, transparent 23px,
+        rgba(200,185,170,0.18) 23px, rgba(200,185,170,0.18) 24px
+      );
+    }
+    .env-close-flap {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 55%;
+      background: var(--env-flap);
+      clip-path: polygon(0 0, 100% 0, 50% 92%);
+      border-radius: 4px 4px 0 0;
+      z-index: 5;
+      transform-origin: 50% 0%;
+      transform: rotateX(172deg);
+      backface-visibility: hidden;
+    }
+    .ty-tagline {
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      color: var(--ink-light);
+    }
+
     /* Animations */
     .fade-up { animation: fadeUp 0.55s ease both; }
     .fade-up-2 { animation: fadeUp 0.55s 0.12s ease both; }
@@ -521,9 +577,9 @@
   <!-- ── Main content (shown after envelope reveal) ── -->
   <div id="main-content">
     <div class="wrapper">
-      <p class="page-header fade-up">a letter arrived for you &#x1F48C;</p>
+      <p class="page-header fade-up" id="main-header">a letter arrived for you &#x1F48C;</p>
 
-      <div class="card pink lined fade-up fade-up-2">
+      <div class="card pink lined fade-up fade-up-2" id="letter-card">
         <div class="card-label">&#x1F48C; a letter for you</div>
         <div class="letter-from" id="letter-from"></div>
         <div class="letter-date" id="letter-date"></div>
@@ -544,7 +600,7 @@
         </div>
       </div>
 
-      <div class="divider fade-up fade-up-3">now it&#x2019;s your turn</div>
+      <div class="divider fade-up fade-up-3" id="turn-divider">now it&#x2019;s your turn</div>
 
       <div class="card mint fade-up fade-up-3" id="write-card">
         <div class="card-label">leave your letter</div>
@@ -561,12 +617,30 @@
         <div class="error-msg" id="error-msg">please write something first!</div>
       </div>
 
-      <div id="thank-you">
-        <div class="card pink" style="text-align:center;padding:2.5rem 2rem;animation:popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both">
-          <span class="big-emoji">&#x1F338;</span>
-          <h2>Your letter is sent!</h2>
-          <p>Thank you for leaving a little piece of yourself here.<br>It means more than you know. &#x2665;</p>
-          <button class="again-btn" id="again-btn">write another</button>
+      <div id="thank-you" style="display:none;width:100%">
+        <div class="env-close-scene">
+          <div class="env-perspective">
+            <div class="env-close-flip" id="ty-flip">
+              <div class="env-face env-close-back">
+                <div class="env-back"></div>
+                <div class="env-close-paper" id="ty-paper"></div>
+                <div class="env-front"></div>
+                <div class="env-bottom"></div>
+                <div class="env-close-flap" id="ty-flap"></div>
+              </div>
+              <div class="env-face env-close-front">
+                <div class="front-stamp">
+                  <svg viewBox="0 0 34 24" width="28" height="20" xmlns="http://www.w3.org/2000/svg"><circle cx="21" cy="13" r="8.5" fill="#6dbf6d"/><circle cx="21" cy="13" r="6" fill="#8fd48f"/><circle cx="21" cy="13" r="3.5" fill="#6dbf6d"/><circle cx="21" cy="13" r="1.5" fill="#8fd48f"/><ellipse cx="14" cy="20" rx="11" ry="4" fill="#8fd48f"/><ellipse cx="4.5" cy="18" rx="4.5" ry="4" fill="#8fd48f"/><line x1="2.5" y1="15" x2="1" y2="9" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/><line x1="6" y1="14" x2="8" y2="8" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/><circle cx="1" cy="8" r="1.6" fill="#2a5a2a"/><circle cx="8.2" cy="7" r="1.6" fill="#2a5a2a"/></svg>
+                  <span class="stamp-name">Gary</span>
+                </div>
+                <div class="front-address">
+                  <span class="addr-to">To: A Stranger</span>
+                  <span class="addr-from">From: You &#x2665;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="ty-tagline">your letter is on its way <svg viewBox="0 0 34 24" width="22" height="16" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle"><circle cx="21" cy="13" r="8.5" fill="#6dbf6d"/><circle cx="21" cy="13" r="6" fill="#8fd48f"/><circle cx="21" cy="13" r="3.5" fill="#6dbf6d"/><circle cx="21" cy="13" r="1.5" fill="#8fd48f"/><ellipse cx="14" cy="20" rx="11" ry="4" fill="#8fd48f"/><ellipse cx="4.5" cy="18" rx="4.5" ry="4" fill="#8fd48f"/><line x1="2.5" y1="15" x2="1" y2="9" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/><line x1="6" y1="14" x2="8" y2="8" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/><circle cx="1" cy="8" r="1.6" fill="#2a5a2a"/><circle cx="8.2" cy="7" r="1.6" fill="#2a5a2a"/></svg></p>
         </div>
       </div>
 
@@ -586,7 +660,7 @@
           Your note will be the letter the next person opens.
         </p>
       </div>
-      <div class="card mint fade-up fade-up-3">
+      <div class="card mint fade-up fade-up-3" id="write-card-f">
         <div class="card-label">write the first letter</div>
         <div class="form-group">
           <label for="name-f">your name (or keep the mystery)</label>
@@ -601,11 +675,29 @@
         <div class="error-msg" id="error-msg-f">please write something first!</div>
       </div>
       <div id="thank-you-f" style="display:none;width:100%">
-        <div class="card pink" style="text-align:center;padding:2.5rem 2rem;animation:popIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both">
-          <span class="big-emoji">&#x1F338;</span>
-          <h2>Your letter is sent!</h2>
-          <p>The next person who finds this will open your letter. &#x2665;</p>
-          <button class="again-btn" id="again-btn-f">write another</button>
+        <div class="env-close-scene">
+          <div class="env-perspective">
+            <div class="env-close-flip" id="ty-flip-f">
+              <div class="env-face env-close-back">
+                <div class="env-back"></div>
+                <div class="env-close-paper" id="ty-paper-f"></div>
+                <div class="env-front"></div>
+                <div class="env-bottom"></div>
+                <div class="env-close-flap" id="ty-flap-f"></div>
+              </div>
+              <div class="env-face env-close-front">
+                <div class="front-stamp">
+                  <svg viewBox="0 0 34 24" width="28" height="20" xmlns="http://www.w3.org/2000/svg"><circle cx="21" cy="13" r="8.5" fill="#6dbf6d"/><circle cx="21" cy="13" r="6" fill="#8fd48f"/><circle cx="21" cy="13" r="3.5" fill="#6dbf6d"/><circle cx="21" cy="13" r="1.5" fill="#8fd48f"/><ellipse cx="14" cy="20" rx="11" ry="4" fill="#8fd48f"/><ellipse cx="4.5" cy="18" rx="4.5" ry="4" fill="#8fd48f"/><line x1="2.5" y1="15" x2="1" y2="9" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/><line x1="6" y1="14" x2="8" y2="8" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/><circle cx="1" cy="8" r="1.6" fill="#2a5a2a"/><circle cx="8.2" cy="7" r="1.6" fill="#2a5a2a"/></svg>
+                  <span class="stamp-name">Gary</span>
+                </div>
+                <div class="front-address">
+                  <span class="addr-to">To: A Stranger</span>
+                  <span class="addr-from">From: You &#x2665;</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="ty-tagline">your letter is on its way <svg viewBox="0 0 34 24" width="22" height="16" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle"><circle cx="21" cy="13" r="8.5" fill="#6dbf6d"/><circle cx="21" cy="13" r="6" fill="#8fd48f"/><circle cx="21" cy="13" r="3.5" fill="#6dbf6d"/><circle cx="21" cy="13" r="1.5" fill="#8fd48f"/><ellipse cx="14" cy="20" rx="11" ry="4" fill="#8fd48f"/><ellipse cx="4.5" cy="18" rx="4.5" ry="4" fill="#8fd48f"/><line x1="2.5" y1="15" x2="1" y2="9" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/><line x1="6" y1="14" x2="8" y2="8" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/><circle cx="1" cy="8" r="1.6" fill="#2a5a2a"/><circle cx="8.2" cy="7" r="1.6" fill="#2a5a2a"/></svg></p>
         </div>
       </div>
     </div>
@@ -688,7 +780,7 @@
       if (!letter) {
         driver.style.display = 'none';
         document.getElementById('write-first-wrap').style.display = 'block';
-        wireForm('name-f','message-f','char-count-f','submit-btn-f','error-msg-f','thank-you-f','again-btn-f', true);
+        wireForm('name-f','message-f','char-count-f','submit-btn-f','error-msg-f','thank-you-f', true);
         return;
       }
 
@@ -698,11 +790,31 @@
       document.getElementById('letter-date').textContent = formatDate(letter.created_at);
       document.getElementById('letter-body').textContent = letter.message;
 
-      wireForm('name','message','char-count','submit-btn','error-msg','thank-you','again-btn', false);
+      wireForm('name','message','char-count','submit-btn','error-msg','thank-you', false);
+    }
+
+    // ── Closing envelope animation ────────────────────────────────────────────
+    function animateEnvelopeClose(flipId, paperId, flapId) {
+      const flip  = document.getElementById(flipId);
+      const paper = document.getElementById(paperId);
+      const flap  = document.getElementById(flapId);
+      // Paper slides back in
+      paper.style.transition = 'transform 0.5s ease-in';
+      paper.style.transform  = 'translateY(0%)';
+      // Flap swings closed
+      setTimeout(() => {
+        flap.style.transition = 'transform 0.45s ease-in-out';
+        flap.style.transform  = 'rotateX(0deg)';
+      }, 450);
+      // Envelope flips to reveal sealed front
+      setTimeout(() => {
+        flip.style.transition = 'transform 0.6s ease-in-out';
+        flip.style.transform  = 'rotateY(180deg)';
+      }, 850);
     }
 
     // ── Form wiring ───────────────────────────────────────────────────────────
-    function wireForm(nameId, msgId, countId, btnId, errId, tyId, againId, isFirst) {
+    function wireForm(nameId, msgId, countId, btnId, errId, tyId, isFirst) {
       const msgEl  = document.getElementById(msgId);
       const charEl = document.getElementById(countId);
       const btn    = document.getElementById(btnId);
@@ -733,11 +845,22 @@
             body: JSON.stringify({ name, message }),
           });
           if (!res.ok) throw new Error();
-          if (!isFirst) {
-            document.getElementById('write-card').style.display = 'none';
-          }
-          document.getElementById(tyId).style.display = 'block';
-          document.getElementById(tyId).scrollIntoView({ behavior:'smooth', block:'center' });
+          // Hide everything except the closing envelope
+          ['write-card', 'write-card-f', 'main-header', 'letter-card', 'turn-divider'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+          });
+          const sq = document.querySelector('.sonder-quote');
+          if (sq) sq.style.display = 'none';
+          // Show closing envelope and animate
+          const tyEl = document.getElementById(tyId);
+          tyEl.style.display = 'flex';
+          tyEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          animateEnvelopeClose(
+            isFirst ? 'ty-flip-f'  : 'ty-flip',
+            isFirst ? 'ty-paper-f' : 'ty-paper',
+            isFirst ? 'ty-flap-f'  : 'ty-flap'
+          );
         } catch {
           btn.disabled = false;
           btn.innerHTML = '<svg viewBox="0 0 34 24" width="18" height="13" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:4px"><circle cx="21" cy="13" r="8.5" fill="#6dbf6d"/><circle cx="21" cy="13" r="6" fill="#8fd48f"/><circle cx="21" cy="13" r="3.5" fill="#6dbf6d"/><circle cx="21" cy="13" r="1.5" fill="#8fd48f"/><ellipse cx="14" cy="20" rx="11" ry="4" fill="#8fd48f"/><ellipse cx="4.5" cy="18" rx="4.5" ry="4" fill="#8fd48f"/><line x1="2.5" y1="15" x2="1" y2="9" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/><line x1="6" y1="14" x2="8" y2="8" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/><circle cx="1" cy="8" r="1.6" fill="#2a5a2a"/><circle cx="8.2" cy="7" r="1.6" fill="#2a5a2a"/></svg>seal &amp; send ✉️';
@@ -747,7 +870,6 @@
         }
       });
 
-      document.getElementById(againId).addEventListener('click', () => location.reload());
     }
 
     init();
