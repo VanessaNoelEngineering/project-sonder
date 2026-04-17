@@ -644,39 +644,31 @@
       <div id="thank-you" style="display:none;width:100%">
         <div class="env-close-scene">
           <div class="mailbox-wrap" id="ty-mailbox">
-            <svg viewBox="0 0 265 200" width="265" height="200" xmlns="http://www.w3.org/2000/svg">
+            <!-- viewBox matches Bootstrap mailbox icon (0 0 16 16), extended right+down for flag & post -->
+            <svg viewBox="0 0 22 26" width="220" height="260" xmlns="http://www.w3.org/2000/svg">
               <!-- Post & base -->
-              <rect x="103" y="152" width="17" height="43" rx="5" fill="#c8b89a"/>
-              <rect x="86" y="190" width="51" height="8" rx="4" fill="#b8a882"/>
-              <!-- Right side face — gives the 3/4 perspective look -->
-              <path d="M166,74 Q194,62 218,88 L218,160 L166,152 Z" fill="#a82a3a"/>
-              <!-- Front dome arch -->
-              <path d="M20,74 A73,64,0,0,1,166,74 Z" fill="#e84f60"/>
-              <!-- Front rectangular body -->
-              <rect x="20" y="74" width="146" height="78" fill="#e84f60"/>
-              <!-- Dark opening (door is open — you see the interior) -->
-              <rect x="34" y="82" width="118" height="66" rx="6" fill="#160604"/>
-              <rect x="42" y="90" width="102" height="51" rx="3" fill="#200806"/>
-              <!-- Dome gloss highlights -->
-              <path d="M40,55 A50,38,0,0,1,148,55" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="13" stroke-linecap="round"/>
-              <path d="M58,38 A30,18,0,0,1,128,38" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="6" stroke-linecap="round"/>
-              <!-- Front face edge shading -->
-              <line x1="20" y1="74" x2="20" y2="152" stroke="#a82a3a" stroke-width="2"/>
-              <line x1="166" y1="74" x2="166" y2="152" stroke="#a82a3a" stroke-width="2"/>
-              <line x1="20" y1="152" x2="166" y2="152" stroke="#a82a3a" stroke-width="2"/>
-              <!-- Open door flap (hinged at bottom, swung forward) -->
-              <polygon id="ty-door-flap" points="34,148 152,148 148,170 38,170" fill="#cc3a4e"/>
-              <circle cx="38" cy="148" r="4" fill="#a82a3a"/>
-              <circle cx="148" cy="148" r="4" fill="#a82a3a"/>
-              <line x1="36" y1="157" x2="150" y2="157" stroke="#a82a3a" stroke-width="1.5"/>
-              <rect x="82" y="159" width="16" height="5" rx="2.5" fill="#a82a3a"/>
-              <!-- Closed door (opacity 0 — fades in after letter enters) -->
-              <rect id="ty-door" x="34" y="82" width="118" height="66" rx="6" fill="#e84f60" opacity="0"/>
-              <rect id="ty-door-latch" x="82" y="113" width="16" height="7" rx="3.5" fill="#a82a3a" opacity="0"/>
-              <!-- Flag pole on right face -->
-              <rect x="215" y="88" width="6" height="58" rx="3" fill="#c8b89a"/>
-              <!-- Flag raises on send -->
-              <rect id="ty-flag" x="215" y="108" width="30" height="20" rx="4" fill="#c8ecd9"/>
+              <rect x="7" y="14.2" width="2" height="8.4" rx="0.5" fill="#c8b89a"/>
+              <rect x="5.2" y="22" width="5.6" height="1.5" rx="0.5" fill="#b8a882"/>
+              <!-- Dark compartment interiors (show through the icon's hollow areas) -->
+              <rect x="0.6" y="6.8" width="5.8" height="6.5" rx="2.2" fill="#1a0806"/>
+              <rect x="8.2" y="6.5" width="6.2" height="6.8" rx="2.2" fill="#1a0806"/>
+              <!-- Mailbox body — exact Bootstrap icon paths, colored red -->
+              <path d="M4 4a3 3 0 0 0-3 3v6h6V7a3 3 0 0 0-3-3m0-1h8a4 4 0 0 1 4 4v6a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V7a4 4 0 0 1 4-4m2.646 1A4 4 0 0 1 8 7v6h7V7a3 3 0 0 0-3-3z" fill="#e84f60"/>
+              <!-- Lock circle on left compartment -->
+              <path d="M5 7c0 .552-.448 0-1 0s-1 .552-1 0a1 1 0 0 1 2 0" fill="#cc3a4e"/>
+              <!-- Mail slot (dark = door is open, interior visible) -->
+              <path d="M11.793 8.5H9v-1h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.354-.146z" fill="#160604"/>
+              <!-- Open door flap (hangs below slot, foreshortened — shows door is ajar) -->
+              <polygon id="ty-door-flap" points="9,9.5 14.5,9.5 14,12.4 9.5,12.4" fill="#cc3a4e"/>
+              <line x1="9.2" y1="10.7" x2="14.2" y2="10.7" stroke="#a82a3a" stroke-width="0.25"/>
+              <rect x="10.8" y="11" width="1.6" height="0.6" rx="0.3" fill="#a82a3a"/>
+              <!-- Closed door (fades in after letter enters) -->
+              <rect id="ty-door" x="9" y="7.4" width="5.7" height="2.2" rx="0.4" fill="#e84f60" opacity="0"/>
+              <rect id="ty-door-latch" x="11.2" y="8" width="1.4" height="0.7" rx="0.35" fill="#cc3a4e" opacity="0"/>
+              <!-- Flag pole -->
+              <rect x="15.3" y="3.5" width="0.7" height="9" rx="0.35" fill="#c8b89a"/>
+              <!-- Flag (raises on send) -->
+              <rect id="ty-flag" x="15.3" y="7.5" width="4" height="2.5" rx="0.5" fill="#c8ecd9"/>
             </svg>
           </div>
           <div id="ty-container">
@@ -740,39 +732,30 @@
       <div id="thank-you-f" style="display:none;width:100%">
         <div class="env-close-scene">
           <div class="mailbox-wrap" id="ty-mailbox-f">
-            <svg viewBox="0 0 265 200" width="265" height="200" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 22 26" width="220" height="260" xmlns="http://www.w3.org/2000/svg">
               <!-- Post & base -->
-              <rect x="103" y="152" width="17" height="43" rx="5" fill="#c8b89a"/>
-              <rect x="86" y="190" width="51" height="8" rx="4" fill="#b8a882"/>
-              <!-- Right side face — gives the 3/4 perspective look -->
-              <path d="M166,74 Q194,62 218,88 L218,160 L166,152 Z" fill="#a82a3a"/>
-              <!-- Front dome arch -->
-              <path d="M20,74 A73,64,0,0,1,166,74 Z" fill="#e84f60"/>
-              <!-- Front rectangular body -->
-              <rect x="20" y="74" width="146" height="78" fill="#e84f60"/>
-              <!-- Dark opening (door is open — you see the interior) -->
-              <rect x="34" y="82" width="118" height="66" rx="6" fill="#160604"/>
-              <rect x="42" y="90" width="102" height="51" rx="3" fill="#200806"/>
-              <!-- Dome gloss highlights -->
-              <path d="M40,55 A50,38,0,0,1,148,55" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="13" stroke-linecap="round"/>
-              <path d="M58,38 A30,18,0,0,1,128,38" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="6" stroke-linecap="round"/>
-              <!-- Front face edge shading -->
-              <line x1="20" y1="74" x2="20" y2="152" stroke="#a82a3a" stroke-width="2"/>
-              <line x1="166" y1="74" x2="166" y2="152" stroke="#a82a3a" stroke-width="2"/>
-              <line x1="20" y1="152" x2="166" y2="152" stroke="#a82a3a" stroke-width="2"/>
-              <!-- Open door flap (hinged at bottom, swung forward) -->
-              <polygon id="ty-door-f-flap" points="34,148 152,148 148,170 38,170" fill="#cc3a4e"/>
-              <circle cx="38" cy="148" r="4" fill="#a82a3a"/>
-              <circle cx="148" cy="148" r="4" fill="#a82a3a"/>
-              <line x1="36" y1="157" x2="150" y2="157" stroke="#a82a3a" stroke-width="1.5"/>
-              <rect x="82" y="159" width="16" height="5" rx="2.5" fill="#a82a3a"/>
-              <!-- Closed door (opacity 0 — fades in after letter enters) -->
-              <rect id="ty-door-f" x="34" y="82" width="118" height="66" rx="6" fill="#e84f60" opacity="0"/>
-              <rect id="ty-door-f-latch" x="82" y="113" width="16" height="7" rx="3.5" fill="#a82a3a" opacity="0"/>
-              <!-- Flag pole on right face -->
-              <rect x="215" y="88" width="6" height="58" rx="3" fill="#c8b89a"/>
-              <!-- Flag raises on send -->
-              <rect id="ty-flag-f" x="215" y="108" width="30" height="20" rx="4" fill="#c8ecd9"/>
+              <rect x="7" y="14.2" width="2" height="8.4" rx="0.5" fill="#c8b89a"/>
+              <rect x="5.2" y="22" width="5.6" height="1.5" rx="0.5" fill="#b8a882"/>
+              <!-- Dark compartment interiors -->
+              <rect x="0.6" y="6.8" width="5.8" height="6.5" rx="2.2" fill="#1a0806"/>
+              <rect x="8.2" y="6.5" width="6.2" height="6.8" rx="2.2" fill="#1a0806"/>
+              <!-- Mailbox body — Bootstrap icon paths colored red -->
+              <path d="M4 4a3 3 0 0 0-3 3v6h6V7a3 3 0 0 0-3-3m0-1h8a4 4 0 0 1 4 4v6a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V7a4 4 0 0 1 4-4m2.646 1A4 4 0 0 1 8 7v6h7V7a3 3 0 0 0-3-3z" fill="#e84f60"/>
+              <!-- Lock circle on left compartment -->
+              <path d="M5 7c0 .552-.448 0-1 0s-1 .552-1 0a1 1 0 0 1 2 0" fill="#cc3a4e"/>
+              <!-- Mail slot (dark = door is open) -->
+              <path d="M11.793 8.5H9v-1h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.354-.146z" fill="#160604"/>
+              <!-- Open door flap -->
+              <polygon id="ty-door-f-flap" points="9,9.5 14.5,9.5 14,12.4 9.5,12.4" fill="#cc3a4e"/>
+              <line x1="9.2" y1="10.7" x2="14.2" y2="10.7" stroke="#a82a3a" stroke-width="0.25"/>
+              <rect x="10.8" y="11" width="1.6" height="0.6" rx="0.3" fill="#a82a3a"/>
+              <!-- Closed door -->
+              <rect id="ty-door-f" x="9" y="7.4" width="5.7" height="2.2" rx="0.4" fill="#e84f60" opacity="0"/>
+              <rect id="ty-door-f-latch" x="11.2" y="8" width="1.4" height="0.7" rx="0.35" fill="#cc3a4e" opacity="0"/>
+              <!-- Flag pole -->
+              <rect x="15.3" y="3.5" width="0.7" height="9" rx="0.35" fill="#c8b89a"/>
+              <!-- Flag (raises on send) -->
+              <rect id="ty-flag-f" x="15.3" y="7.5" width="4" height="2.5" rx="0.5" fill="#c8ecd9"/>
             </svg>
           </div>
           <div id="ty-container-f">
@@ -968,11 +951,11 @@
       const hint      = document.getElementById(hintId);
       const delivered = document.getElementById(deliveredId);
 
-      // Target: center of the door opening (≈46% down the mailbox)
-      // Subtract envelope's own center so the envelope center lands at the opening
+      // Target: center of the mail slot (y≈8.5 out of viewBox 26 = ~33% from SVG top)
+      // Subtract envelope's own vertical center so the envelope center lands at the slot
       const mRect = mailbox.getBoundingClientRect();
       const cRect = container.getBoundingClientRect();
-      const openingCY = mRect.top + mRect.height * 0.46;
+      const openingCY = mRect.top + mRect.height * 0.33;
       const dy = openingCY - (cRect.top + cRect.height / 2); // negative: moves up
 
       // Hide hint
@@ -1003,10 +986,10 @@
         }, 240);
       }, 380);
 
-      // Flag raises
+      // Flag raises (4 SVG units × 10px/unit = 40px up)
       setTimeout(() => {
         flag.style.transition = 'transform 0.45s cubic-bezier(0.34,1.56,0.64,1)';
-        flag.style.transform  = 'translateY(-30px)';
+        flag.style.transform  = 'translateY(-40px)';
       }, 820);
 
       // Delivered
