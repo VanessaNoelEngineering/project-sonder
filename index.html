@@ -644,29 +644,33 @@
       <div id="thank-you" style="display:none;width:100%">
         <div class="env-close-scene">
           <div class="mailbox-wrap" id="ty-mailbox">
-            <svg viewBox="0 0 200 132" width="200" height="132" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 210 162" width="210" height="162" xmlns="http://www.w3.org/2000/svg">
               <!-- Post -->
-              <rect x="91" y="93" width="14" height="33" rx="4" fill="#c8b89a"/>
-              <rect x="78" y="122" width="40" height="7" rx="3" fill="#b8a882"/>
-              <!-- Shadow layer for depth -->
-              <path d="M18,60 A82,42,0,0,1,182,60 L182,95 L18,95 Z" fill="#d96472"/>
-              <!-- Main mailbox body (arch = dome + rect) -->
-              <path d="M18,60 A82,42,0,0,1,182,60 L182,93 L18,93 Z" fill="#f4818e"/>
-              <!-- Dome highlight -->
-              <path d="M44,53 A58,28,0,0,1,156,53" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="10" stroke-linecap="round"/>
-              <!-- Side edge shading -->
-              <line x1="18" y1="60" x2="18" y2="93" stroke="#d96472" stroke-width="2.5"/>
-              <line x1="182" y1="60" x2="182" y2="93" stroke="#d96472" stroke-width="2.5"/>
-              <!-- Letter slot -->
-              <rect x="40" y="79" width="104" height="9" rx="4" fill="#3d2b1f"/>
-              <!-- Door overlay (animated close) -->
-              <rect id="ty-door" x="40" y="79" width="104" height="9" rx="4" fill="#f4818e" style="clip-path:inset(0 0 100% 0)"/>
-              <!-- Latch nub -->
-              <rect x="89" y="89" width="14" height="3" rx="1.5" fill="#d96472"/>
-              <!-- Flag pole -->
-              <rect x="179" y="54" width="5" height="35" rx="2" fill="#c8b89a"/>
-              <!-- Flag -->
-              <rect id="ty-flag" x="179" y="64" width="24" height="16" rx="3" fill="#c8ecd9"/>
+              <rect x="95" y="108" width="16" height="48" rx="5" fill="#c8b89a"/>
+              <rect x="78" y="150" width="50" height="9" rx="4" fill="#b8a882"/>
+              <!-- Mailbox drop shadow -->
+              <path d="M22,80 A83,67,0,0,1,188,80 L188,111 L22,111 Z" fill="#b83a4a"/>
+              <!-- Mailbox body: wide arch + short rectangular base -->
+              <path d="M22,80 A83,67,0,0,1,188,80 L188,108 L22,108 Z" fill="#e84f60"/>
+              <!-- Dome gloss highlight (top-left area) -->
+              <path d="M48,58 A56,38,0,0,1,158,58" fill="none" stroke="rgba(255,255,255,0.32)" stroke-width="13" stroke-linecap="round"/>
+              <!-- Secondary subtle gloss -->
+              <path d="M64,40 A34,18,0,0,1,140,40" fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="6" stroke-linecap="round"/>
+              <!-- Left/right edge shading on rectangular body -->
+              <rect x="22" y="80" width="7" height="28" fill="#b83a4a"/>
+              <rect x="181" y="80" width="7" height="28" fill="#b83a4a"/>
+              <!-- Bottom trim -->
+              <rect x="22" y="105" width="166" height="3" rx="1" fill="#b83a4a"/>
+              <!-- Letter slot (dark opening) -->
+              <rect x="46" y="87" width="110" height="11" rx="5.5" fill="#2a1a12"/>
+              <!-- Door overlay: same red, clip-path animates it closed -->
+              <rect id="ty-door" x="46" y="87" width="110" height="11" rx="5.5" fill="#e84f60" style="clip-path:inset(0 0 100% 0)"/>
+              <!-- Small latch knob -->
+              <rect x="93" y="99" width="16" height="5" rx="2.5" fill="#b83a4a"/>
+              <!-- Flag pole (right side) -->
+              <rect x="185" y="60" width="7" height="44" rx="3" fill="#c8b89a"/>
+              <!-- Flag: mint, starts lower (raises on send) -->
+              <rect id="ty-flag" x="185" y="72" width="28" height="19" rx="4" fill="#c8ecd9"/>
             </svg>
           </div>
           <div id="ty-container">
@@ -730,29 +734,33 @@
       <div id="thank-you-f" style="display:none;width:100%">
         <div class="env-close-scene">
           <div class="mailbox-wrap" id="ty-mailbox-f">
-            <svg viewBox="0 0 200 132" width="200" height="132" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 210 162" width="210" height="162" xmlns="http://www.w3.org/2000/svg">
               <!-- Post -->
-              <rect x="91" y="93" width="14" height="33" rx="4" fill="#c8b89a"/>
-              <rect x="78" y="122" width="40" height="7" rx="3" fill="#b8a882"/>
-              <!-- Shadow layer for depth -->
-              <path d="M18,60 A82,42,0,0,1,182,60 L182,95 L18,95 Z" fill="#d96472"/>
-              <!-- Main mailbox body -->
-              <path d="M18,60 A82,42,0,0,1,182,60 L182,93 L18,93 Z" fill="#f4818e"/>
-              <!-- Dome highlight -->
-              <path d="M44,53 A58,28,0,0,1,156,53" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="10" stroke-linecap="round"/>
-              <!-- Side edge shading -->
-              <line x1="18" y1="60" x2="18" y2="93" stroke="#d96472" stroke-width="2.5"/>
-              <line x1="182" y1="60" x2="182" y2="93" stroke="#d96472" stroke-width="2.5"/>
+              <rect x="95" y="108" width="16" height="48" rx="5" fill="#c8b89a"/>
+              <rect x="78" y="150" width="50" height="9" rx="4" fill="#b8a882"/>
+              <!-- Mailbox drop shadow -->
+              <path d="M22,80 A83,67,0,0,1,188,80 L188,111 L22,111 Z" fill="#b83a4a"/>
+              <!-- Mailbox body: wide arch + short rectangular base -->
+              <path d="M22,80 A83,67,0,0,1,188,80 L188,108 L22,108 Z" fill="#e84f60"/>
+              <!-- Dome gloss highlight -->
+              <path d="M48,58 A56,38,0,0,1,158,58" fill="none" stroke="rgba(255,255,255,0.32)" stroke-width="13" stroke-linecap="round"/>
+              <!-- Secondary subtle gloss -->
+              <path d="M64,40 A34,18,0,0,1,140,40" fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="6" stroke-linecap="round"/>
+              <!-- Left/right edge shading -->
+              <rect x="22" y="80" width="7" height="28" fill="#b83a4a"/>
+              <rect x="181" y="80" width="7" height="28" fill="#b83a4a"/>
+              <!-- Bottom trim -->
+              <rect x="22" y="105" width="166" height="3" rx="1" fill="#b83a4a"/>
               <!-- Letter slot -->
-              <rect x="40" y="79" width="104" height="9" rx="4" fill="#3d2b1f"/>
-              <!-- Door overlay (animated close) -->
-              <rect id="ty-door-f" x="40" y="79" width="104" height="9" rx="4" fill="#f4818e" style="clip-path:inset(0 0 100% 0)"/>
-              <!-- Latch nub -->
-              <rect x="89" y="89" width="14" height="3" rx="1.5" fill="#d96472"/>
+              <rect x="46" y="87" width="110" height="11" rx="5.5" fill="#2a1a12"/>
+              <!-- Door overlay -->
+              <rect id="ty-door-f" x="46" y="87" width="110" height="11" rx="5.5" fill="#e84f60" style="clip-path:inset(0 0 100% 0)"/>
+              <!-- Latch knob -->
+              <rect x="93" y="99" width="16" height="5" rx="2.5" fill="#b83a4a"/>
               <!-- Flag pole -->
-              <rect x="179" y="54" width="5" height="35" rx="2" fill="#c8b89a"/>
+              <rect x="185" y="60" width="7" height="44" rx="3" fill="#c8b89a"/>
               <!-- Flag -->
-              <rect id="ty-flag-f" x="179" y="64" width="24" height="16" rx="3" fill="#c8ecd9"/>
+              <rect id="ty-flag-f" x="185" y="72" width="28" height="19" rx="4" fill="#c8ecd9"/>
             </svg>
           </div>
           <div id="ty-container-f">
@@ -915,9 +923,9 @@
         sendToMailbox(containerId, mailboxId, doorId, hintId, flagId, deliveredId);
       }
 
-      // Trackpad / mouse wheel scroll UP
+      // Trackpad / mouse wheel scroll UP (deltaY > 0 = fingers moving up on Mac natural scrolling)
       function onWheel(e) {
-        if (e.deltaY < 0) {
+        if (e.deltaY > 0) {
           e.preventDefault();
           tryToSend();
         }
@@ -950,10 +958,10 @@
       mailbox.style.transition = 'opacity 0.35s';
       mailbox.style.opacity    = '1';
 
-      // Calculate distance to the slot (≈70% down the mailbox SVG, above the post)
+      // Calculate distance to the letter slot (≈54% down the mailbox SVG)
       const mRect = mailbox.getBoundingClientRect();
       const cRect = container.getBoundingClientRect();
-      const slotY = mRect.top + mRect.height * 0.70;
+      const slotY = mRect.top + mRect.height * 0.54;
       const dy    = slotY - cRect.top; // negative: envelope moves upward
 
       // Hide hint
