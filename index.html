@@ -442,21 +442,15 @@
 
     /* ── Closing envelope (post-submit) ── */
     .env-close-scene {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0.6rem;
+      gap: 1.2rem;
       width: 100%;
       min-height: 100vh;
     }
-    #ty-container, #ty-container-f {
-      cursor: grab;
-      touch-action: none;
-      user-select: none;
-    }
-    #ty-container:active, #ty-container-f:active { cursor: grabbing; }
-    .mailbox-wrap { opacity: 1; }
     .swipe-hint {
       font-family: 'Caveat', cursive;
       font-size: 1.15rem;
@@ -464,15 +458,44 @@
       opacity: 0;
       animation: nudgeUp 1.8s ease-in-out infinite;
     }
-    .delivered-msg {
-      font-family: 'Caveat', cursive;
-      font-size: 1.4rem;
-      color: var(--ink-light);
-      transition: opacity 0.5s;
-    }
     @keyframes nudgeUp {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-8px); }
+    }
+    /* Sonder reveal — overlays the whole scene */
+    .sonder-reveal {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      padding: 2.5rem 2rem;
+      opacity: 0;
+      pointer-events: none;
+      text-align: center;
+    }
+    .sonder-reveal-word {
+      font-family: 'Caveat', cursive;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.04em;
+    }
+    .sonder-reveal-def {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: var(--ink-light);
+      max-width: 460px;
+    }
+    .sonder-reveal-thanks {
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      color: var(--ink-light);
+      opacity: 0.7;
     }
     .env-close-flip {
       position: relative;
@@ -643,34 +666,6 @@
 
       <div id="thank-you" style="display:none;width:100%">
         <div class="env-close-scene">
-          <div class="mailbox-wrap" id="ty-mailbox">
-            <!-- viewBox matches Bootstrap mailbox icon (0 0 16 16), extended right+down for flag & post -->
-            <svg viewBox="0 0 22 26" width="220" height="260" xmlns="http://www.w3.org/2000/svg">
-              <!-- Post & base -->
-              <rect x="7" y="14.2" width="2" height="8.4" rx="0.5" fill="#c8b89a"/>
-              <rect x="5.2" y="22" width="5.6" height="1.5" rx="0.5" fill="#b8a882"/>
-              <!-- Dark compartment interiors (show through the icon's hollow areas) -->
-              <rect x="0.6" y="6.8" width="5.8" height="6.5" rx="2.2" fill="#1a0806"/>
-              <rect x="8.2" y="6.5" width="6.2" height="6.8" rx="2.2" fill="#1a0806"/>
-              <!-- Mailbox body — exact Bootstrap icon paths, colored red -->
-              <path d="M4 4a3 3 0 0 0-3 3v6h6V7a3 3 0 0 0-3-3m0-1h8a4 4 0 0 1 4 4v6a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V7a4 4 0 0 1 4-4m2.646 1A4 4 0 0 1 8 7v6h7V7a3 3 0 0 0-3-3z" fill="#e84f60"/>
-              <!-- Lock circle on left compartment -->
-              <path d="M5 7c0 .552-.448 0-1 0s-1 .552-1 0a1 1 0 0 1 2 0" fill="#cc3a4e"/>
-              <!-- Mail slot (dark = door is open, interior visible) -->
-              <path d="M11.793 8.5H9v-1h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.354-.146z" fill="#160604"/>
-              <!-- Open door flap (hangs below slot, foreshortened — shows door is ajar) -->
-              <polygon id="ty-door-flap" points="9,9.5 14.5,9.5 14,12.4 9.5,12.4" fill="#cc3a4e"/>
-              <line x1="9.2" y1="10.7" x2="14.2" y2="10.7" stroke="#a82a3a" stroke-width="0.25"/>
-              <rect x="10.8" y="11" width="1.6" height="0.6" rx="0.3" fill="#a82a3a"/>
-              <!-- Closed door (fades in after letter enters) -->
-              <rect id="ty-door" x="9" y="7.4" width="5.7" height="2.2" rx="0.4" fill="#e84f60" opacity="0"/>
-              <rect id="ty-door-latch" x="11.2" y="8" width="1.4" height="0.7" rx="0.35" fill="#cc3a4e" opacity="0"/>
-              <!-- Flag pole -->
-              <rect x="15.3" y="3.5" width="0.7" height="9" rx="0.35" fill="#c8b89a"/>
-              <!-- Flag (raises on send) -->
-              <rect id="ty-flag" x="15.3" y="7.5" width="4" height="2.5" rx="0.5" fill="#c8ecd9"/>
-            </svg>
-          </div>
           <div id="ty-container">
             <div class="env-perspective">
               <div class="env-close-flip" id="ty-flip">
@@ -695,12 +690,12 @@
             </div>
           </div>
           <p class="swipe-hint" id="ty-hint">swipe up to send &#x2191;</p>
-          <p class="delivered-msg" id="ty-delivered" style="opacity:0">delivered &#x2665;</p>
+          <div class="sonder-reveal" id="ty-sonder">
+            <p class="sonder-reveal-word">sonder</p>
+            <p class="sonder-reveal-def">&#x201C;the realization that each random passerby is living a life as vivid and complex as your own &#x2014; with their own ambitions, worries, and quiet struggles, in which you are merely a background character.&#x201D;</p>
+            <p class="sonder-reveal-thanks">your letter is on its way &#x2665;</p>
+          </div>
         </div>
-      </div>
-
-      <div class="sonder-quote">
-        <p>&#x201C;Sonder is the profound realization that every random passerby is living a life as vivid, complex, and chaotic as your own. It is the awareness that every person has their own story, ambitions, and worries, in which you are merely an extra in the background.&#x201D;</p>
       </div>
     </div>
   </div>
@@ -731,33 +726,6 @@
       </div>
       <div id="thank-you-f" style="display:none;width:100%">
         <div class="env-close-scene">
-          <div class="mailbox-wrap" id="ty-mailbox-f">
-            <svg viewBox="0 0 22 26" width="220" height="260" xmlns="http://www.w3.org/2000/svg">
-              <!-- Post & base -->
-              <rect x="7" y="14.2" width="2" height="8.4" rx="0.5" fill="#c8b89a"/>
-              <rect x="5.2" y="22" width="5.6" height="1.5" rx="0.5" fill="#b8a882"/>
-              <!-- Dark compartment interiors -->
-              <rect x="0.6" y="6.8" width="5.8" height="6.5" rx="2.2" fill="#1a0806"/>
-              <rect x="8.2" y="6.5" width="6.2" height="6.8" rx="2.2" fill="#1a0806"/>
-              <!-- Mailbox body — Bootstrap icon paths colored red -->
-              <path d="M4 4a3 3 0 0 0-3 3v6h6V7a3 3 0 0 0-3-3m0-1h8a4 4 0 0 1 4 4v6a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V7a4 4 0 0 1 4-4m2.646 1A4 4 0 0 1 8 7v6h7V7a3 3 0 0 0-3-3z" fill="#e84f60"/>
-              <!-- Lock circle on left compartment -->
-              <path d="M5 7c0 .552-.448 0-1 0s-1 .552-1 0a1 1 0 0 1 2 0" fill="#cc3a4e"/>
-              <!-- Mail slot (dark = door is open) -->
-              <path d="M11.793 8.5H9v-1h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.354-.146z" fill="#160604"/>
-              <!-- Open door flap -->
-              <polygon id="ty-door-f-flap" points="9,9.5 14.5,9.5 14,12.4 9.5,12.4" fill="#cc3a4e"/>
-              <line x1="9.2" y1="10.7" x2="14.2" y2="10.7" stroke="#a82a3a" stroke-width="0.25"/>
-              <rect x="10.8" y="11" width="1.6" height="0.6" rx="0.3" fill="#a82a3a"/>
-              <!-- Closed door -->
-              <rect id="ty-door-f" x="9" y="7.4" width="5.7" height="2.2" rx="0.4" fill="#e84f60" opacity="0"/>
-              <rect id="ty-door-f-latch" x="11.2" y="8" width="1.4" height="0.7" rx="0.35" fill="#cc3a4e" opacity="0"/>
-              <!-- Flag pole -->
-              <rect x="15.3" y="3.5" width="0.7" height="9" rx="0.35" fill="#c8b89a"/>
-              <!-- Flag (raises on send) -->
-              <rect id="ty-flag-f" x="15.3" y="7.5" width="4" height="2.5" rx="0.5" fill="#c8ecd9"/>
-            </svg>
-          </div>
           <div id="ty-container-f">
             <div class="env-perspective">
               <div class="env-close-flip" id="ty-flip-f">
@@ -782,7 +750,11 @@
             </div>
           </div>
           <p class="swipe-hint" id="ty-hint-f">swipe up to send &#x2191;</p>
-          <p class="delivered-msg" id="ty-delivered-f" style="opacity:0">delivered &#x2665;</p>
+          <div class="sonder-reveal" id="ty-sonder-f">
+            <p class="sonder-reveal-word">sonder</p>
+            <p class="sonder-reveal-def">&#x201C;the realization that each random passerby is living a life as vivid and complex as your own &#x2014; with their own ambitions, worries, and quiet struggles, in which you are merely a background character.&#x201D;</p>
+            <p class="sonder-reveal-thanks">your letter is on its way &#x2665;</p>
+          </div>
         </div>
       </div>
     </div>
@@ -879,7 +851,7 @@
     }
 
     // ── Closing envelope animation ────────────────────────────────────────────
-    function animateEnvelopeClose(flipId, paperId, flapId, containerId, mailboxId, doorId, hintId, flagId, deliveredId) {
+    function animateEnvelopeClose(flipId, paperId, flapId, containerId, hintId, sonderId) {
       const flip  = document.getElementById(flipId);
       const paper = document.getElementById(paperId);
       const flap  = document.getElementById(flapId);
@@ -891,39 +863,35 @@
         flap.style.transition = 'transform 0.45s ease-in-out';
         flap.style.transform  = 'rotateX(0deg)';
       }, 450);
-      // Envelope flips to reveal sealed front
+      // Envelope flips to show sealed front
       setTimeout(() => {
         flip.style.transition = 'transform 0.6s ease-in-out';
         flip.style.transform  = 'rotateY(180deg)';
       }, 850);
-      // Fade in swipe hint after sealing is done
+      // Swipe hint fades in
       setTimeout(() => {
         const hint = document.getElementById(hintId);
         hint.style.transition = 'opacity 0.4s';
         hint.style.opacity    = '1';
-        setupSwipeToSend(containerId, mailboxId, doorId, hintId, flagId, deliveredId);
+        setupSwipeToSend(containerId, hintId, sonderId);
       }, 1600);
     }
 
-    function setupSwipeToSend(containerId, mailboxId, doorId, hintId, flagId, deliveredId) {
+    function setupSwipeToSend(containerId, hintId, sonderId) {
       let sent = false;
 
       function tryToSend() {
         if (sent) return;
         sent = true;
-        // Clean up listeners
         window.removeEventListener('wheel', onWheel);
         window.removeEventListener('touchstart', onTouchStart);
         window.removeEventListener('touchend', onTouchEnd);
-        sendToMailbox(containerId, mailboxId, doorId, hintId, flagId, deliveredId);
+        sendLetter(containerId, hintId, sonderId);
       }
 
-      // Trackpad / mouse wheel scroll UP (deltaY > 0 = fingers moving up on Mac natural scrolling)
+      // Trackpad / mouse wheel scroll UP
       function onWheel(e) {
-        if (e.deltaY > 0) {
-          e.preventDefault();
-          tryToSend();
-        }
+        if (e.deltaY > 0) { e.preventDefault(); tryToSend(); }
       }
 
       // Mobile touch swipe UP
@@ -941,59 +909,25 @@
       window.addEventListener('touchend',   onTouchEnd,   { passive: true });
     }
 
-    function sendToMailbox(containerId, mailboxId, doorId, hintId, flagId, deliveredId) {
+    function sendLetter(containerId, hintId, sonderId) {
       const container = document.getElementById(containerId);
-      const mailbox   = document.getElementById(mailboxId);
-      const door      = document.getElementById(doorId);
-      const doorFlap  = document.getElementById(doorId + '-flap');
-      const doorLatch = document.getElementById(doorId + '-latch');
-      const flag      = document.getElementById(flagId);
       const hint      = document.getElementById(hintId);
-      const delivered = document.getElementById(deliveredId);
+      const sonder    = document.getElementById(sonderId);
 
-      // Target: center of the mail slot (y≈8.5 out of viewBox 26 = ~33% from SVG top)
-      // Subtract envelope's own vertical center so the envelope center lands at the slot
-      const mRect = mailbox.getBoundingClientRect();
-      const cRect = container.getBoundingClientRect();
-      const openingCY = mRect.top + mRect.height * 0.33;
-      const dy = openingCY - (cRect.top + cRect.height / 2); // negative: moves up
-
-      // Hide hint
-      hint.style.transition = 'opacity 0.2s';
+      // Hint fades out
+      hint.style.transition = 'opacity 0.25s';
       hint.style.opacity    = '0';
 
-      // Fly envelope up and shrink into the open door
-      container.style.transformOrigin = 'center center';
-      container.style.transition = 'transform 0.5s ease-in, opacity 0.18s 0.34s';
-      container.style.transform  = `translateY(${dy}px) scale(0.1)`;
+      // Envelope floats up and fades out
+      container.style.transition = 'transform 0.65s ease-in, opacity 0.4s 0.22s';
+      container.style.transform  = 'translateY(-48px)';
       container.style.opacity    = '0';
 
-      // Door flap swings closed (fades up as if pushed by the letter)
+      // Sonder definition fades in
       setTimeout(() => {
-        if (doorFlap) {
-          doorFlap.style.transition = 'opacity 0.3s ease-in, transform 0.3s ease-in';
-          doorFlap.style.opacity    = '0';
-          doorFlap.style.transform  = 'translateY(-10px)';
-        }
-        // Closed door fades in
-        setTimeout(() => {
-          door.style.transition = 'opacity 0.4s ease';
-          door.style.opacity    = '1';
-          if (doorLatch) {
-            doorLatch.style.transition = 'opacity 0.4s ease';
-            doorLatch.style.opacity    = '1';
-          }
-        }, 240);
-      }, 380);
-
-      // Flag raises (4 SVG units × 10px/unit = 40px up)
-      setTimeout(() => {
-        flag.style.transition = 'transform 0.45s cubic-bezier(0.34,1.56,0.64,1)';
-        flag.style.transform  = 'translateY(-40px)';
-      }, 820);
-
-      // Delivered
-      setTimeout(() => { delivered.style.opacity = '1'; }, 1120);
+        sonder.style.transition = 'opacity 1.1s ease';
+        sonder.style.opacity    = '1';
+      }, 650);
     }
 
     // ── Form wiring ───────────────────────────────────────────────────────────
@@ -1044,11 +978,8 @@
             isFirst ? 'ty-paper-f'     : 'ty-paper',
             isFirst ? 'ty-flap-f'      : 'ty-flap',
             isFirst ? 'ty-container-f' : 'ty-container',
-            isFirst ? 'ty-mailbox-f'   : 'ty-mailbox',
-            isFirst ? 'ty-door-f'      : 'ty-door',
             isFirst ? 'ty-hint-f'      : 'ty-hint',
-            isFirst ? 'ty-flag-f'      : 'ty-flag',
-            isFirst ? 'ty-delivered-f' : 'ty-delivered'
+            isFirst ? 'ty-sonder-f'    : 'ty-sonder'
           );
         } catch {
           btn.disabled = false;
