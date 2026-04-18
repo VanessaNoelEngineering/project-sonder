@@ -1075,7 +1075,7 @@
           const res = await fetch('/api/submit', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, message }),
+            body: JSON.stringify({ name, message, source: window.__tagSource || null }),
           });
           if (!res.ok) throw new Error();
           // Hide everything except the closing envelope
@@ -1107,6 +1107,9 @@
       });
 
     }
+
+    // Read NFC tag source from URL (e.g. ?tag=brooklyn-cafe)
+    window.__tagSource = new URLSearchParams(window.location.search).get('tag') || null;
 
     init();
   </script>
