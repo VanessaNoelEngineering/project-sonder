@@ -508,10 +508,11 @@
     .sonder-reveal-def {
       font-family: 'Lora', serif;
       font-style: italic;
-      font-size: 1.25rem;
-      line-height: 1.85;
-      color: var(--ink-light);
-      max-width: 520px;
+      font-size: 1.45rem;
+      font-weight: 400;
+      line-height: 2.1;
+      color: var(--ink);
+      max-width: 580px;
       min-height: 5em; /* reserve space so layout doesn't jump */
     }
     .sonder-reveal-thanks {
@@ -735,13 +736,11 @@
                 <circle cx="1" cy="8" r="1.6" fill="#2a5a2a"/>
                 <circle cx="8.2" cy="7" r="1.6" fill="#2a5a2a"/>
               </svg>
-              <p class="gary-sent-label">Gary</p>
             </div>
             <!-- Panel 2: sonder definition (typewriter) -->
             <div class="sonder-text-panel" id="ty-text-panel" style="display:none">
               <p class="sonder-reveal-word">sonder</p>
               <p class="sonder-reveal-def" id="ty-def"></p>
-              <p class="sonder-reveal-thanks" id="ty-thanks">Your letter is on its way &#x2665;</p>
             </div>
           </div>
         </div>
@@ -815,13 +814,11 @@
                 <circle cx="1" cy="8" r="1.6" fill="#2a5a2a"/>
                 <circle cx="8.2" cy="7" r="1.6" fill="#2a5a2a"/>
               </svg>
-              <p class="gary-sent-label">Gary</p>
             </div>
             <!-- Panel 2: sonder definition (typewriter) -->
             <div class="sonder-text-panel" id="ty-text-panel-f" style="display:none">
               <p class="sonder-reveal-word">sonder</p>
               <p class="sonder-reveal-def" id="ty-def-f"></p>
-              <p class="sonder-reveal-thanks" id="ty-thanks-f">Your letter is on its way &#x2665;</p>
             </div>
           </div>
         </div>
@@ -999,7 +996,6 @@
       const sentPanel  = document.getElementById('ty-sent-panel'  + suffix);
       const textPanel  = document.getElementById('ty-text-panel'  + suffix);
       const defEl      = document.getElementById('ty-def'         + suffix);
-      const thanksEl   = document.getElementById('ty-thanks'      + suffix);
 
       // Hint fades out instantly
       hint.style.transition = 'opacity 0.2s';
@@ -1032,10 +1028,7 @@
           }));
           // Typewrite the definition (~10 s — slow enough to savour)
           const def = '\u201cThe realization that each random passerby is living a life as vivid and complex as your own \u2014 with their own ambitions, worries, and quiet struggles, in which you are merely a background character.\u201d';
-          typewriterText(defEl, def, 10000, () => {
-            // After typing finishes, fade in the little sign-off
-            thanksEl.style.opacity = '1';
-          });
+          typewriterText(defEl, def, 10000);
         }, 500);
       }, 2900); // show sent panel for ~2.25s after it fades in
     }
