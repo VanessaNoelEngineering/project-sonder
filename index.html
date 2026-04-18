@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sonder — A Letter For You</title>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -500,7 +500,7 @@
     }
     .sonder-reveal-word {
       font-family: 'Caveat', cursive;
-      font-size: 3.2rem;
+      font-size: 4rem;
       font-weight: 700;
       color: var(--ink);
       letter-spacing: 0.04em;
@@ -508,12 +508,12 @@
     .sonder-reveal-def {
       font-family: 'Lora', serif;
       font-style: italic;
-      font-size: 1.75rem;
-      font-weight: 500;
-      line-height: 2.0;
+      font-size: 1.9rem;
+      font-weight: 400;
+      line-height: 1.95;
       color: var(--ink);
-      max-width: 640px;
-      min-height: 5em; /* reserve space so layout doesn't jump */
+      max-width: 660px;
+      min-height: 4em;
     }
     .sonder-reveal-thanks {
       font-family: 'Caveat', cursive;
@@ -1108,7 +1108,8 @@
 
     }
 
-    // Always start at the top — prevents partial envelope rotation if browser restores scroll
+    // Disable browser scroll restoration so it doesn't jump back after our scrollTo
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
 
     // Read NFC tag source from URL (e.g. ?tag=brooklyn-cafe)
