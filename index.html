@@ -470,15 +470,37 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.2rem;
       padding: 2.5rem 2rem;
       opacity: 0;
       pointer-events: none;
       text-align: center;
     }
+    /* Sub-panels inside the reveal */
+    .sonder-sent-panel,
+    .sonder-text-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      width: 100%;
+    }
+    .sonder-sent-title {
+      font-family: 'Caveat', cursive;
+      font-size: 2.1rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+    .gary-sent-label {
+      font-family: 'Caveat', cursive;
+      font-size: 1rem;
+      color: var(--ink-light);
+      margin-top: -0.4rem;
+    }
     .sonder-reveal-word {
       font-family: 'Caveat', cursive;
-      font-size: 3rem;
+      font-size: 3.2rem;
       font-weight: 700;
       color: var(--ink);
       letter-spacing: 0.04em;
@@ -486,16 +508,23 @@
     .sonder-reveal-def {
       font-family: 'Lora', serif;
       font-style: italic;
-      font-size: 1.05rem;
-      line-height: 1.9;
+      font-size: 1.25rem;
+      line-height: 1.85;
       color: var(--ink-light);
-      max-width: 460px;
+      max-width: 520px;
+      min-height: 5em; /* reserve space so layout doesn't jump */
     }
     .sonder-reveal-thanks {
       font-family: 'Caveat', cursive;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       color: var(--ink-light);
-      opacity: 0.7;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    /* Envelope is clickable once hint shows */
+    .env-close-scene.ready #ty-container,
+    .env-close-scene.ready #ty-container-f {
+      cursor: pointer;
     }
     .env-close-flip {
       position: relative;
@@ -691,9 +720,29 @@
           </div>
           <p class="swipe-hint" id="ty-hint">swipe up to send &#x2191;</p>
           <div class="sonder-reveal" id="ty-sonder">
-            <p class="sonder-reveal-word">sonder</p>
-            <p class="sonder-reveal-def">&#x201C;the realization that each random passerby is living a life as vivid and complex as your own &#x2014; with their own ambitions, worries, and quiet struggles, in which you are merely a background character.&#x201D;</p>
-            <p class="sonder-reveal-thanks">your letter is on its way &#x2665;</p>
+            <!-- Panel 1: sent confirmation -->
+            <div class="sonder-sent-panel" id="ty-sent-panel">
+              <p class="sonder-sent-title">your letter has been sent</p>
+              <svg viewBox="0 0 34 24" width="90" height="64" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="21" cy="13" r="8.5" fill="#6dbf6d"/>
+                <circle cx="21" cy="13" r="6" fill="#8fd48f"/>
+                <circle cx="21" cy="13" r="3.5" fill="#6dbf6d"/>
+                <circle cx="21" cy="13" r="1.5" fill="#8fd48f"/>
+                <ellipse cx="14" cy="20" rx="11" ry="4" fill="#8fd48f"/>
+                <ellipse cx="4.5" cy="18" rx="4.5" ry="4" fill="#8fd48f"/>
+                <line x1="2.5" y1="15" x2="1" y2="9" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/>
+                <line x1="6" y1="14" x2="8" y2="8" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/>
+                <circle cx="1" cy="8" r="1.6" fill="#2a5a2a"/>
+                <circle cx="8.2" cy="7" r="1.6" fill="#2a5a2a"/>
+              </svg>
+              <p class="gary-sent-label">Gary &#x1F40C;</p>
+            </div>
+            <!-- Panel 2: sonder definition (typewriter) -->
+            <div class="sonder-text-panel" id="ty-text-panel" style="display:none">
+              <p class="sonder-reveal-word">sonder</p>
+              <p class="sonder-reveal-def" id="ty-def"></p>
+              <p class="sonder-reveal-thanks" id="ty-thanks">your letter is on its way &#x2665;</p>
+            </div>
           </div>
         </div>
       </div>
@@ -751,9 +800,29 @@
           </div>
           <p class="swipe-hint" id="ty-hint-f">swipe up to send &#x2191;</p>
           <div class="sonder-reveal" id="ty-sonder-f">
-            <p class="sonder-reveal-word">sonder</p>
-            <p class="sonder-reveal-def">&#x201C;the realization that each random passerby is living a life as vivid and complex as your own &#x2014; with their own ambitions, worries, and quiet struggles, in which you are merely a background character.&#x201D;</p>
-            <p class="sonder-reveal-thanks">your letter is on its way &#x2665;</p>
+            <!-- Panel 1: sent confirmation -->
+            <div class="sonder-sent-panel" id="ty-sent-panel-f">
+              <p class="sonder-sent-title">your letter has been sent</p>
+              <svg viewBox="0 0 34 24" width="90" height="64" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="21" cy="13" r="8.5" fill="#6dbf6d"/>
+                <circle cx="21" cy="13" r="6" fill="#8fd48f"/>
+                <circle cx="21" cy="13" r="3.5" fill="#6dbf6d"/>
+                <circle cx="21" cy="13" r="1.5" fill="#8fd48f"/>
+                <ellipse cx="14" cy="20" rx="11" ry="4" fill="#8fd48f"/>
+                <ellipse cx="4.5" cy="18" rx="4.5" ry="4" fill="#8fd48f"/>
+                <line x1="2.5" y1="15" x2="1" y2="9" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/>
+                <line x1="6" y1="14" x2="8" y2="8" stroke="#6dbf6d" stroke-width="1.3" stroke-linecap="round"/>
+                <circle cx="1" cy="8" r="1.6" fill="#2a5a2a"/>
+                <circle cx="8.2" cy="7" r="1.6" fill="#2a5a2a"/>
+              </svg>
+              <p class="gary-sent-label">Gary &#x1F40C;</p>
+            </div>
+            <!-- Panel 2: sonder definition (typewriter) -->
+            <div class="sonder-text-panel" id="ty-text-panel-f" style="display:none">
+              <p class="sonder-reveal-word">sonder</p>
+              <p class="sonder-reveal-def" id="ty-def-f"></p>
+              <p class="sonder-reveal-thanks" id="ty-thanks-f">your letter is on its way &#x2665;</p>
+            </div>
           </div>
         </div>
       </div>
@@ -873,61 +942,92 @@
         const hint = document.getElementById(hintId);
         hint.style.transition = 'opacity 0.4s';
         hint.style.opacity    = '1';
-        setupSwipeToSend(containerId, hintId, sonderId);
+        setupClickToSend(containerId, hintId, sonderId);
       }, 1600);
     }
 
-    function setupSwipeToSend(containerId, hintId, sonderId) {
-      let sent = false;
+    function setupClickToSend(containerId, hintId, sonderId) {
+      // Lock scroll while on the send screen
+      document.body.style.overflow = 'hidden';
 
+      const container = document.getElementById(containerId);
+      // Mark scene as ready so CSS can set pointer cursor
+      container.closest('.env-close-scene').classList.add('ready');
+
+      let sent = false;
       function tryToSend() {
         if (sent) return;
         sent = true;
-        window.removeEventListener('wheel', onWheel);
-        window.removeEventListener('touchstart', onTouchStart);
-        window.removeEventListener('touchend', onTouchEnd);
-        sendLetter(containerId, hintId, sonderId);
+        container.style.cursor = 'default';
+        container.closest('.env-close-scene').classList.remove('ready');
+        container.removeEventListener('click', tryToSend);
+        // Small fake delay so it feels like a swipe is being processed
+        setTimeout(() => sendLetter(containerId, hintId, sonderId), 380);
       }
-
-      // Trackpad / mouse wheel scroll UP
-      function onWheel(e) {
-        if (e.deltaY > 0) { e.preventDefault(); tryToSend(); }
-      }
-
-      // Mobile touch swipe UP
-      let touchStartY = null;
-      function onTouchStart(e) { touchStartY = e.touches[0].clientY; }
-      function onTouchEnd(e) {
-        if (touchStartY === null) return;
-        const dy = e.changedTouches[0].clientY - touchStartY;
-        touchStartY = null;
-        if (dy < -60) tryToSend();
-      }
-
-      window.addEventListener('wheel', onWheel, { passive: false });
-      window.addEventListener('touchstart', onTouchStart, { passive: true });
-      window.addEventListener('touchend',   onTouchEnd,   { passive: true });
+      container.addEventListener('click', tryToSend);
     }
 
     function sendLetter(containerId, hintId, sonderId) {
-      const container = document.getElementById(containerId);
-      const hint      = document.getElementById(hintId);
-      const sonder    = document.getElementById(sonderId);
+      const container  = document.getElementById(containerId);
+      const hint       = document.getElementById(hintId);
+      const sonder     = document.getElementById(sonderId);
+      // Derive sub-panel IDs from sonderId (e.g. "ty-sonder" → "ty-sent-panel", "ty-text-panel")
+      const suffix     = sonderId.replace('ty-sonder', '');  // '' or '-f'
+      const sentPanel  = document.getElementById('ty-sent-panel'  + suffix);
+      const textPanel  = document.getElementById('ty-text-panel'  + suffix);
+      const defEl      = document.getElementById('ty-def'         + suffix);
+      const thanksEl   = document.getElementById('ty-thanks'      + suffix);
 
-      // Hint fades out
-      hint.style.transition = 'opacity 0.25s';
+      // Hint fades out instantly
+      hint.style.transition = 'opacity 0.2s';
       hint.style.opacity    = '0';
 
       // Envelope floats up and fades out
       container.style.transition = 'transform 0.65s ease-in, opacity 0.4s 0.22s';
-      container.style.transform  = 'translateY(-48px)';
+      container.style.transform  = 'translateY(-52px)';
       container.style.opacity    = '0';
 
-      // Sonder definition fades in
+      // Phase 1 — "your letter has been sent" + Gary
       setTimeout(() => {
-        sonder.style.transition = 'opacity 1.1s ease';
+        sonder.style.transition = 'opacity 0.7s ease';
         sonder.style.opacity    = '1';
+        sonder.style.pointerEvents = 'none';
       }, 650);
+
+      // Phase 2 — cross-fade to sonder typewriter (~2.2s after it fades in)
+      setTimeout(() => {
+        sentPanel.style.transition = 'opacity 0.5s ease';
+        sentPanel.style.opacity    = '0';
+        setTimeout(() => {
+          sentPanel.style.display = 'none';
+          textPanel.style.display = 'flex';
+          textPanel.style.opacity = '0';
+          textPanel.style.transition = 'opacity 0.55s ease';
+          // Trigger reflow then fade in
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            textPanel.style.opacity = '1';
+          }));
+          // Typewrite the definition (~5 s)
+          const def = '\u201cthe realization that each random passerby is living a life as vivid and complex as your own \u2014 with their own ambitions, worries, and quiet struggles, in which you are merely a background character.\u201d';
+          typewriterText(defEl, def, 5000, () => {
+            // After typing finishes, fade in the little sign-off
+            thanksEl.style.opacity = '1';
+          });
+        }, 500);
+      }, 2900); // show sent panel for ~2.25s after it fades in
+    }
+
+    function typewriterText(el, text, duration, onDone) {
+      el.textContent = '';
+      const interval = duration / text.length;
+      let i = 0;
+      function tick() {
+        if (i >= text.length) { if (onDone) onDone(); return; }
+        el.textContent += text[i];
+        i++;
+        setTimeout(tick, interval);
+      }
+      tick();
     }
 
     // ── Form wiring ───────────────────────────────────────────────────────────
