@@ -12,7 +12,7 @@ export default async () => {
     'Authorization': `Bearer ${key}`,
   };
 
-  const idsRes = await fetch(`${url}/rest/v1/letters?select=id`, { headers });
+  const idsRes = await fetch(`${url}/rest/v1/letters?select=id&hidden=eq.false`, { headers });
   if (!idsRes.ok) {
     const text = await idsRes.text();
     console.error('Failed to fetch IDs:', idsRes.status, text);
