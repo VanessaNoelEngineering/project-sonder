@@ -508,11 +508,11 @@
     .sonder-reveal-def {
       font-family: 'Lora', serif;
       font-style: italic;
-      font-size: 1.45rem;
-      font-weight: 400;
-      line-height: 2.1;
+      font-size: 1.75rem;
+      font-weight: 500;
+      line-height: 2.0;
       color: var(--ink);
-      max-width: 580px;
+      max-width: 640px;
       min-height: 5em; /* reserve space so layout doesn't jump */
     }
     .sonder-reveal-thanks {
@@ -1107,6 +1107,9 @@
       });
 
     }
+
+    // Always start at the top — prevents partial envelope rotation if browser restores scroll
+    window.scrollTo(0, 0);
 
     // Read NFC tag source from URL (e.g. ?tag=brooklyn-cafe)
     window.__tagSource = new URLSearchParams(window.location.search).get('tag') || null;
