@@ -18,6 +18,11 @@ export default async (req) => {
   const name   = (body.name   || '').trim() || 'Anonymous';
   const source = (body.source || '').trim().slice(0, 100) || null;
 
+  // Silently discard obvious test submissions
+  if (name.toLowerCase() === 'test' && message.toLowerCase() === 'test') {
+    return Response.json({ ok: true });
+  }
+
   const res = await fetch(`${process.env.SUPABASE_URL}/rest/v1/letters`, {
     method: 'POST',
     headers: {
