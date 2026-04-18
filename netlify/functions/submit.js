@@ -15,7 +15,8 @@ export default async (req) => {
     return Response.json({ error: 'Message is required.' }, { status: 400 });
   }
 
-  const name = (body.name || '').trim() || 'Anonymous';
+  const name   = (body.name   || '').trim() || 'Anonymous';
+  const source = (body.source || '').trim().slice(0, 100) || null;
 
   const res = await fetch(`${process.env.SUPABASE_URL}/rest/v1/letters`, {
     method: 'POST',
@@ -25,7 +26,7 @@ export default async (req) => {
       'Content-Type': 'application/json',
       'Prefer': 'return=minimal',
     },
-    body: JSON.stringify({ name, message: message.slice(0, 600) }),
+    body: JSON.stringify({ name, message: message.slice(0, 600), source }),
   });
 
   if (!res.ok) {
