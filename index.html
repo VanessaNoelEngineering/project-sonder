@@ -722,7 +722,7 @@
           <div class="sonder-reveal" id="ty-sonder">
             <!-- Panel 1: sent confirmation -->
             <div class="sonder-sent-panel" id="ty-sent-panel">
-              <p class="sonder-sent-title">your letter has been sent</p>
+              <p class="sonder-sent-title">Your letter has been sent</p>
               <svg viewBox="0 0 34 24" width="90" height="64" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="21" cy="13" r="8.5" fill="#6dbf6d"/>
                 <circle cx="21" cy="13" r="6" fill="#8fd48f"/>
@@ -735,13 +735,13 @@
                 <circle cx="1" cy="8" r="1.6" fill="#2a5a2a"/>
                 <circle cx="8.2" cy="7" r="1.6" fill="#2a5a2a"/>
               </svg>
-              <p class="gary-sent-label">Gary &#x1F40C;</p>
+              <p class="gary-sent-label">Gary</p>
             </div>
             <!-- Panel 2: sonder definition (typewriter) -->
             <div class="sonder-text-panel" id="ty-text-panel" style="display:none">
               <p class="sonder-reveal-word">sonder</p>
               <p class="sonder-reveal-def" id="ty-def"></p>
-              <p class="sonder-reveal-thanks" id="ty-thanks">your letter is on its way &#x2665;</p>
+              <p class="sonder-reveal-thanks" id="ty-thanks">Your letter is on its way &#x2665;</p>
             </div>
           </div>
         </div>
@@ -802,7 +802,7 @@
           <div class="sonder-reveal" id="ty-sonder-f">
             <!-- Panel 1: sent confirmation -->
             <div class="sonder-sent-panel" id="ty-sent-panel-f">
-              <p class="sonder-sent-title">your letter has been sent</p>
+              <p class="sonder-sent-title">Your letter has been sent</p>
               <svg viewBox="0 0 34 24" width="90" height="64" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="21" cy="13" r="8.5" fill="#6dbf6d"/>
                 <circle cx="21" cy="13" r="6" fill="#8fd48f"/>
@@ -815,13 +815,13 @@
                 <circle cx="1" cy="8" r="1.6" fill="#2a5a2a"/>
                 <circle cx="8.2" cy="7" r="1.6" fill="#2a5a2a"/>
               </svg>
-              <p class="gary-sent-label">Gary &#x1F40C;</p>
+              <p class="gary-sent-label">Gary</p>
             </div>
             <!-- Panel 2: sonder definition (typewriter) -->
             <div class="sonder-text-panel" id="ty-text-panel-f" style="display:none">
               <p class="sonder-reveal-word">sonder</p>
               <p class="sonder-reveal-def" id="ty-def-f"></p>
-              <p class="sonder-reveal-thanks" id="ty-thanks-f">your letter is on its way &#x2665;</p>
+              <p class="sonder-reveal-thanks" id="ty-thanks-f">Your letter is on its way &#x2665;</p>
             </div>
           </div>
         </div>
@@ -947,11 +947,10 @@
     }
 
     function setupClickToSend(containerId, hintId, sonderId) {
-      // Lock scroll while on the send screen
+      // Lock page scroll while on the send screen
       document.body.style.overflow = 'hidden';
 
       const container = document.getElementById(containerId);
-      // Mark scene as ready so CSS can set pointer cursor
       container.closest('.env-close-scene').classList.add('ready');
 
       let sent = false;
@@ -961,10 +960,34 @@
         container.style.cursor = 'default';
         container.closest('.env-close-scene').classList.remove('ready');
         container.removeEventListener('click', tryToSend);
-        // Small fake delay so it feels like a swipe is being processed
+        window.removeEventListener('wheel',      onWheel,      false);
+        window.removeEventListener('touchstart', onTouchStart, false);
+        window.removeEventListener('touchend',   onTouchEnd,   false);
+        // Small delay so it feels like a gesture is being processed
         setTimeout(() => sendLetter(containerId, hintId, sonderId), 380);
       }
+
+      // Click the envelope
       container.addEventListener('click', tryToSend);
+
+      // Trackpad / mouse scroll up (natural scrolling: deltaY > 0 = fingers moving up)
+      function onWheel(e) {
+        if (e.deltaY > 0) { e.preventDefault(); tryToSend(); }
+      }
+
+      // Touch swipe up (mobile)
+      let touchStartY = null;
+      function onTouchStart(e) { touchStartY = e.touches[0].clientY; }
+      function onTouchEnd(e) {
+        if (touchStartY === null) return;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        touchStartY = null;
+        if (dy < -50) tryToSend();
+      }
+
+      window.addEventListener('wheel',      onWheel,      { passive: false });
+      window.addEventListener('touchstart', onTouchStart, { passive: true  });
+      window.addEventListener('touchend',   onTouchEnd,   { passive: true  });
     }
 
     function sendLetter(containerId, hintId, sonderId) {
@@ -1007,9 +1030,9 @@
           requestAnimationFrame(() => requestAnimationFrame(() => {
             textPanel.style.opacity = '1';
           }));
-          // Typewrite the definition (~5 s)
-          const def = '\u201cthe realization that each random passerby is living a life as vivid and complex as your own \u2014 with their own ambitions, worries, and quiet struggles, in which you are merely a background character.\u201d';
-          typewriterText(defEl, def, 5000, () => {
+          // Typewrite the definition (~10 s — slow enough to savour)
+          const def = '\u201cThe realization that each random passerby is living a life as vivid and complex as your own \u2014 with their own ambitions, worries, and quiet struggles, in which you are merely a background character.\u201d';
+          typewriterText(defEl, def, 10000, () => {
             // After typing finishes, fade in the little sign-off
             thanksEl.style.opacity = '1';
           });
